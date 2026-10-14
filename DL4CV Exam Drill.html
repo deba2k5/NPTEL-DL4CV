@@ -1,0 +1,765 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>DL4CV Exam Drill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a lab-bench workbook — sticky mode bar, week rail, single column of question cards with worked solutions */
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --sunk:#E3E9E6; --ink:#14201C; --muted:#56665F; --line:#CCD6D1;
+  --accent:#0E6F62; --accent-ink:#FFFFFF; --accent-soft:#D3EAE5;
+  --good:#17803D; --good-soft:#DCF2E3; --bad:#B42318; --bad-soft:#FBE3E0; --warn:#A15C07; --warn-soft:#FCEBD2;
+  --s1:#0E6F62; --s2:#C2560C; --s3:#3B5BDB;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1412; --surface:#16201D; --sunk:#1D2925; --ink:#E3ECE8; --muted:#97A8A1; --line:#2C3A35;
+  --accent:#3FC1AC; --accent-ink:#06201B; --accent-soft:#16362F;
+  --good:#4ADE80; --good-soft:#143322; --bad:#F87171; --bad-soft:#3A1715; --warn:#F2B04C; --warn-soft:#3A2A10;
+  --s1:#3FC1AC; --s2:#F08A4B; --s3:#8EA6FF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1412; --surface:#16201D; --sunk:#1D2925; --ink:#E3ECE8; --muted:#97A8A1; --line:#2C3A35;
+  --accent:#3FC1AC; --accent-ink:#06201B; --accent-soft:#16362F;
+  --good:#4ADE80; --good-soft:#143322; --bad:#F87171; --bad-soft:#3A1715; --warn:#F2B04C; --warn-soft:#3A2A10;
+  --s1:#3FC1AC; --s2:#F08A4B; --s3:#8EA6FF; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+header.top{display:grid;gap:14px;padding-block:8px 18px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,6vw,44px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{color:var(--muted);max-width:62ch;margin:0}
+.stats{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.stats b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s}
+nav.modes{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap}
+.mode{font:500 14px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
+.mode[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mode:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;margin-block:16px 6px}
+.wk{font:500 13px var(--f-mono);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 4px 6px;cursor:pointer;display:grid;gap:4px;justify-items:center}
+.wk small{font-size:10px;color:var(--muted)}
+.wk .m{width:80%;height:3px;background:var(--sunk);border-radius:2px;overflow:hidden}.wk .m i{display:block;height:100%;background:var(--accent)}
+.wk[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+section.view{display:grid;gap:16px;margin-top:14px}
+.weekhead{display:grid;gap:6px;padding-block:6px}
+.weekhead h2{font-family:var(--f-display);font-size:26px;margin:0;line-height:1.15;text-wrap:balance}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.chipbtn{font:500 12px var(--f-mono);border:1px solid var(--line);background:transparent;color:var(--muted);padding:5px 10px;border-radius:99px;cursor:pointer}
+.chipbtn[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.sheet{background:var(--sunk);border-radius:10px;padding:14px 16px;display:grid;gap:8px}
+.sheet h3{margin:0;font:600 13px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sheet ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.sheet code,.qtext code{font-family:var(--f-mono);font-size:.9em;background:var(--surface);padding:1px 5px;border-radius:4px}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px;min-width:0}
+.qcard.ok{border-color:var(--good)}.qcard.no{border-color:var(--bad)}
+.qmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:500 12px var(--f-mono);color:var(--muted)}
+.qmeta .num{color:var(--ink);font-weight:600}
+.tag{padding:2px 8px;border-radius:99px;background:var(--sunk)}
+.tag.code{background:var(--accent-soft);color:var(--accent)}
+.tag.miss{background:var(--warn-soft);color:var(--warn)}
+.tag.res-ok{background:var(--good-soft);color:var(--good)}.tag.res-no{background:var(--bad-soft);color:var(--bad)}
+.qtext{font-size:15.5px;min-width:0}
+.qtext p{margin:0 0 6px}
+.qtext pre,.mat{font-family:var(--f-mono);font-size:13px;background:var(--sunk);padding:8px 10px;border-radius:6px;overflow-x:auto;margin:6px 0}
+.opts{display:grid;gap:6px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;min-width:0}
+.opt input{margin-top:4px;accent-color:var(--accent)}
+.opt span{min-width:0;overflow-wrap:anywhere}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.numrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.numrow input{font:500 15px var(--f-mono);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:180px;max-width:100%}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:500 14px var(--f-body);border-radius:8px;padding:8px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.5;cursor:default}
+.fb{border-radius:8px;padding:10px 12px;display:grid;gap:6px;font-size:14.5px}
+.fb.ok{background:var(--good-soft)}.fb.no{background:var(--bad-soft)}
+.fb strong{font-family:var(--f-display);font-size:16px}
+.fb.ok strong{color:var(--good)}.fb.no strong{color:var(--bad)}
+pre.code{font-family:var(--f-mono);font-size:12.5px;line-height:1.5;background:var(--sunk);border-radius:8px;padding:12px;overflow-x:auto;margin:0;white-space:pre;color:var(--ink)}
+.codewrap{display:grid;gap:6px;min-width:0}
+.codewrap .lbl{font:600 12px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.viz{background:var(--sunk);border-radius:10px;padding:12px;overflow-x:auto;min-width:0}
+.viz svg{display:block;max-width:100%;height:auto}
+.viz .cap{font:12px var(--f-mono);color:var(--muted);margin-top:6px}
+.grid4{display:inline-grid;grid-template-columns:repeat(4,52px);gap:3px;font:500 13px var(--f-mono)}
+.grid4 div{height:40px;display:grid;place-items:center;border-radius:4px;font-variant-numeric:tabular-nums}
+.w0{background:color-mix(in srgb,var(--s1) 18%,var(--surface))}.w1{background:color-mix(in srgb,var(--s2) 18%,var(--surface))}
+.w2{background:color-mix(in srgb,var(--s3) 18%,var(--surface))}.w3{background:color-mix(in srgb,var(--warn) 20%,var(--surface))}
+.grid4 .mx{outline:2px solid var(--ink);font-weight:700}
+.vizrow{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:500 12.5px var(--f-mono)}
+.flow span{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.flow b{color:var(--muted);font-weight:400}
+.swatch{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font:12px var(--f-mono)}
+.swatch i{width:56px;height:40px;border-radius:6px;display:inline-block;border:1px solid var(--line)}
+svg .ax{stroke:var(--line)}svg .tx{fill:var(--muted);font:11px var(--f-mono)}
+svg .l1{stroke:var(--s1);fill:none;stroke-width:2.2}svg .l2{stroke:var(--s2);fill:none;stroke-width:2.2}svg .l3{stroke:var(--s3);fill:none;stroke-width:2;stroke-dasharray:5 4}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.toolbar label{font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center}
+select{font:500 14px var(--f-body);padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.timer{font:500 20px var(--f-mono);font-variant-numeric:tabular-nums;margin-left:auto}
+.score{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:8px}
+.score .big{font-family:var(--f-display);font-size:44px;font-weight:700;line-height:1}
+.empty{color:var(--muted);padding:24px;text-align:center;background:var(--surface);border:1px dashed var(--line);border-radius:12px}
+.drillstat{font:13px var(--f-mono);color:var(--muted)}
+.note{font-size:13.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:480px){.grid4{grid-template-columns:repeat(4,44px)}.qcard{padding:14px}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">NPTEL · noc26-cs174 · Deep Learning for Computer Vision</div>
+  <h1>DL4CV <em>Exam Drill</em></h1>
+  <p class="lede">Every assignment question from weeks 1–12, with worked answers, solution code for the notebook questions, a timed mixed mock exam, and endless randomised numerical drills.</p>
+  <div class="stats" id="stats"></div>
+  <div class="bar"><i id="pbar"></i></div>
+</header>
+
+<nav class="modes" aria-label="Practice mode">
+  <button class="mode" data-mode="weeks" aria-pressed="true">Week by week</button>
+  <button class="mode" data-mode="mock" aria-pressed="false">Mixed mock exam</button>
+  <button class="mode" data-mode="drill" aria-pressed="false">Numerical drills</button>
+  <button class="mode" data-mode="mistakes" aria-pressed="false">My weak spots</button>
+</nav>
+
+<main id="app"></main>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const sig=x=>1/(1+Math.exp(-x));
+const r3=x=>Math.round(x*1000)/1000;
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+let store={res:{},drill:{n:0,ok:0}};
+try{const s=localStorage.getItem('dl4cv-drill');if(s)store=Object.assign(store,JSON.parse(s))}catch(e){}
+const save=()=>{try{localStorage.setItem('dl4cv-drill',JSON.stringify(store))}catch(e){}};
+
+/* ---------- week notes (formula sheets) ---------- */
+const WEEKS={
+1:{t:"NumPy, images & filtering basics",n:["Broadcasting: (3,4)·(4,) multiplies every row element-wise.","<code>np.linalg.eig</code> returns eigenvectors as <b>columns</b>: use <code>vecs[:, idx]</code>.","sigmoid(x)=1/(1+e^-x); sigmoid(0)=0.5, sigmoid(−7)≈0.0009.","'valid' k×k filter: output = N − k + 1 → 512 − 5 + 1 = 508.","A mean filter outputs floats, so the median stops being an integer (10 → ≈10.28)."]},
+2:{t:"Filters, edges, contrast & SIFT",n:["High-pass kernel coefficients sum to 0; low-pass (smoothing) sum to 1.","Separable k×k kernel → two 1D passes: cost per pixel k² → 2k.","Canny: smooth → gradient mag/dir → non-max suppression → double threshold → hysteresis linking.","LoG / 2nd derivative: edges at zero crossings. 1st derivative: edges at gradient maxima.","Linear contrast stretch: (v − min)/(max − min) × 255, min/max from the whole image.","Blob detectors find regions; corner detectors find points. SIFT: scale, rotation, illumination invariant."]},
+3:{t:"PyTorch tensors, autograd & MLP training",n:["<code>torch.randn</code> = N(0,1); uniform [a,b): <code>torch.rand(..)*(b−a)+a</code>.","<code>torch.max(t, dim=-1)</code> returns (values, indices).","Masked MSE in the notebook divides by 3 (all elements), not by the mask count.","Gradients live in <code>.grad</code> after <code>loss.backward()</code>.","Training loop: zero_grad → forward → loss → backward → step."]},
+4:{t:"Regularisation, activations, CNN maths, pooling backprop",n:["Conv output: (W − F + 2P)/S + 1, in every dimension including depth if the filter is 3D-strided.","Max-pool backprop: gradient goes only to the max cell of each window; others get 0.","Avg-pool backprop: each cell gets window-gradient / (k·k).","σ(x) = (tanh(x/2) + 1)/2. σ′(x) is symmetric about the y-axis.","RMSProp: r = ρr + (1−ρ)g²; θ ← θ − η·g/√(δ + r).","Mixup: x̃ = λx₁ + (1−λ)x₂, ỹ = λy₁ + (1−λ)y₂.","ELU(x) = x if x>0 else α(eˣ − 1)."]},
+5:{t:"CNN on MNIST (notebook)",n:["Weight shape is (out_ch, in_ch, kH, kW).","Conv params = out·in·k·k + out. BatchNorm trainable = 2·C (γ, β); running stats don't count.","28 → pool → 14 → pool → 7, so flatten = 16·7·7 = 784.","Total here: 832 + 64 + 25,104 + 32 + 7,850 = 33,882."]},
+6:{t:"Architectures, detection, segmentation, efficient convs",n:["IoU = overlap / (A + B − overlap).","11-point AP: average interpolated precision at recall 0, 0.1, …, 1.0.","RoI pooling came with Fast R-CNN. R-CNN warps each crop and runs a CNN per region.","Standard conv: params k²MN, cost k²MN·Df².","Depthwise: k²M params, k²M·Df² cost. Pointwise: MN params, MN·Df² cost.","DenseNet connects each layer to all later layers. ConvNeXt uses GELU, not Swish."]},
+7:{t:"Integral image, Fast R-CNN loss, Dice, LSTM (notebook)",n:["Region sum = ii[x2][y2] + ii[x1−1][y1−1] − ii[x1−1][y2] − ii[x2][y1−1].","Multi-task loss = −log p_true + α·SmoothL1(t_u, v). SmoothL1(d) = |d| − 0.5 when |d| ≥ 1.","Dice = (2|P∩T| + s)/(|P| + |T| + s); loss = 1 − Dice. Random vs random ≈ 0.5.","LSTM params = 4·(h·in + h·h + 2h). hidden 5, in 1 → 160; + fc 6 = 166."]},
+8:{t:"RNNs, attention, LSTM & GRU numericals",n:["RNN weights with no bias: U = in×hidden, V = hidden×hidden, W = hidden×classes.","LSTM: f,i,o = σ(W·[h,x] + b); C̃ = tanh(W_c·[h,x] + b_c); C = f·C₋₁ + i·C̃; h = o·tanh(C).","GRU: z,r = σ(W·[h,x]); h̃ = tanh(W·[r·h₋₁, x]); h = (1 − z)·h₋₁ + z·h̃.","Hard attention is non-differentiable → trained with variance-reduction (REINFORCE).","Autoencoder ≡ PCA only with linear activations."]},
+9:{t:"Autoencoders, multi-head attention, ViT (notebook)",n:["Overcomplete AE (code > input) reconstructs almost perfectly → lower loss than undercomplete.","MHA scale = √(head_dim) = √(32/8) = 2. Q and K must share a dimension.","ViT patch embed: Conv2d with kernel = stride = patch. 28/7 → 16 patches + 1 CLS = 17 tokens."]},
+10:{t:"Transformers in vision, GANs & VAEs",n:["ViTs lack the inductive biases (locality, translation equivariance) of convs → need more data.","Swin: hierarchical, shifted local windows. DETR: no anchors, no region proposals.","Mode collapse = generator outputs little variety.","VAE reparameterisation: z = μ + σ·ε.","Generative models learn p(x): detect outliers, unsupervised features, sample. Conditional learn p(x|y)."]},
+11:{t:"VAE code, GAN loss, DDPM (notebook)",n:["std = exp(0.5·log_var), not exp(log_var).","D loss = BCE(real,1) + BCE(fake,0) ≈ 2× G loss for random preds → G < D.","ᾱ_T = Π(1 − β_t) ≈ e^(−Σβ). Linear 1e-4→0.02 over 1000 steps: Σβ ≈ 10 → ᾱ ≈ 4.5×10⁻⁵.","x_t = √ᾱ_t·x₀ + √(1 − ᾱ_t)·ε. At t = 999 it is basically pure noise: mean ≈ 0."]},
+12:{t:"Diffusion guidance, self-supervised learning, CLIP/BLIP",n:["Higher classifier-free guidance scale → stronger prompt adherence, less diverse samples.","γ = 0 removes guidance → unconditional generation, more diversity.","Sum of a linear schedule = steps × average value.","MoCo keeps a <b>queue</b> of keys, not a stack. BYOL needs no negatives. SimCLR negatives come from the batch.","Rotation SSL predicts the rotation angle. CLIP: contrastive joint text-image embedding. BLIP: captioning."]}
+};
+
+/* ---------- question bank ---------- */
+const Q=[
+/* WEEK 1 */
+{w:1,n:"Q1",t:"single",tag:"code",q:"<p>arr1 = [[1,2,3,4],[5,6,7,8],[9,10,11,12]], arr2 = [0.5, 1.5, 2, 1]. Multiply element-wise (broadcast), take the mean of each row, then the standard deviation of those means. Which is right?</p>",o:["1.23 , [3.875, 8.375, 13.575]","3.45 , [3.375, 8.875, 13.375]","4.08 , [3.375, 8.375, 13.375]","4.24 , [3.875, 8.875, 13.875]"],a:2,e:"Row 1: [0.5, 3, 6, 4] → 13.5/4 = 3.375. Each row adds 4 to every element of arr1, and arr2 sums to 5, so each mean grows by 4·5/4 = 5. np.std([3.375, 8.375, 13.375]) = 5·√(2/3) ≈ 4.08.",code:`scaled_arr = arr1 * arr2                  # broadcasting (3,4)*(4,)
+row_means = scaled_arr.mean(axis=1)
+std_dev_of_means = np.std(row_means)`},
+{w:1,n:"Q2",t:"single",tag:"code",q:"<p>A = [[2,1,−1],[1,3,1],[−1,1,4]]. Largest eigenvalue and its eigenvector?</p>",o:["0.78568026, [−0.756, 0.521, −0.397]","3.53918887, [0.632, 0.739, −0.233]","4.67513087, [−0.172, 0.427, 0.888]","4.67513087, [−0.756, 0.521, −0.397]"],a:2,e:"np.linalg.eig gives eigenvalues 0.786, 3.539, 4.675. Eigenvectors are the COLUMNS, so take vecs[:, argmax]. Option D pairs the largest value with the wrong vector.",code:`eigenvalues, eigenvectors = np.linalg.eig(A)
+max_eigenvalue_index = np.argmax(eigenvalues)
+largest_eigenvalue = eigenvalues[max_eigenvalue_index]
+largest_eigenvector = eigenvectors[:, max_eigenvalue_index]   # column!`},
+{w:1,n:"Q3",t:"single",tag:"code",q:"<p>Apply f(x) = 1/(1+e<sup>−x</sup>) to [−7, −5.2, −1, −1.5, 0.3] and sum.</p>",o:["1.03","1.00","1.50","3.02"],a:0,e:"σ values ≈ 0.0009, 0.0055, 0.2689, 0.1824, 0.5744 → sum ≈ 1.03.",viz:"sigmoid",code:`def function(x):
+    return 1 / (1 + np.exp(-x))
+modified_list = function(np.array(input_list))
+sum_modified = np.sum(modified_list)`},
+{w:1,n:"Q4",t:"single",tag:"code",q:"<p>Convert the RGB golden_retriever.jpg to GBR by stacking channels (G, B, R). What does the dog look like?</p>",o:["Unchanged golden-orange","Purple / magenta-blue tint","Bright green tint","Grayscale"],a:1,e:"Golden fur is high R, medium G, low B. In GBR the red channel shows G (medium), green shows B (low), blue shows R (high) → purple/blue-magenta.",viz:"gbr",code:`r_img = img1[:, :, 0]
+g_img = img1[:, :, 1]
+b_img = img1[:, :, 2]
+img_new = np.dstack((g_img, b_img, r_img))`},
+{w:1,n:"Q5",t:"single",tag:"code",q:"<p>human_mitosis is 512×512. Shape after a 5×5 mean filter (valid convolution)?</p>",o:["(512, 512)","(510, 510)","(508, 508)","(507, 507)"],a:2,e:"Valid convolution: 512 − 5 + 1 = 508.",code:`from scipy.signal import convolve2d
+kernel = np.ones((5, 5)) / 25
+out = convolve2d(img2, kernel, mode='valid')
+print(out.shape)          # (508, 508)`},
+{w:1,n:"Q6a",t:"num",tag:"code",q:"<p>Median of human_mitosis <b>before</b> filtering?</p>",r:[10,10],e:"np.median(img2) = 10.",code:`print(np.median(img2))   # 10.0`},
+{w:1,n:"Q6b",t:"num",tag:"code",miss:1,q:"<p>Median of the image <b>after</b> the 5×5 mean filter? (2 decimals)</p>",r:[10.27,10.29],e:"≈ 10.28. The mean filter produces float averages, so the median is no longer a whole number. Entering 10 cost you marks here.",code:`print(np.median(out))    # ≈ 10.28`},
+
+/* WEEK 2 */
+{w:2,n:"Q1",t:"multi",miss:1,q:"<p>Which kernels are high-pass filters? (select all)</p>",o:["[[1,2,1],[0,0,0],[−1,−2,−1]]","[[−2,−2,−2],[−2,−2,−2],[−2,−2,−2]]","[[1,2,1],[2,1,2],[1,2,1]]","[[−1,−1,0],[−1,0,1],[0,1,1]]"],a:[0,3],e:"High-pass kernels have coefficients summing to 0 (they respond to change, not flat areas). Sobel sums to 0; the diagonal-gradient kernel sums to 0. The all-(−2) and all-positive kernels have non-zero sums (smoothing/scaling)."},
+{w:2,n:"Q2",t:"single",q:"<p>Match each filter with its role.</p>",o:["Gaussian → smoothing · Sobel → edge detection · 1st-deriv of Gaussian → edges where gradient is high · 2nd-deriv of Gaussian → edges at zero crossings","Gaussian → edge detection · Sobel → smoothing · 1st-deriv → zero crossings · 2nd-deriv → high gradient","Gaussian → smoothing · Sobel → zero crossings · 1st-deriv → high gradient · 2nd-deriv → edge detection","Gaussian → smoothing · Sobel → edge detection · 1st-deriv → zero crossings · 2nd-deriv → high gradient"],a:0,e:"Accepted key 1→iii, 2→iv, 3→v, 4→ii. First derivative peaks at edges; second derivative crosses zero at edges."},
+{w:2,n:"Q3",t:"single",q:"<p>Correct order of the Canny edge detector?</p>",o:["Smooth → gradient magnitude & direction → non-max suppression → threshold strong/weak → connect components","Gradient → smooth → threshold → non-max suppression → connect","Smooth → threshold → gradient → connect → non-max suppression","Non-max suppression → smooth → gradient → threshold → connect"],a:0,e:"Key 3→1→6→4→2. Noise first, then gradients, thin edges with NMS, double threshold, hysteresis linking.",viz:"canny"},
+{w:2,n:"Q4",t:"single",miss:1,q:"<p>Why is a separable 2D kernel useful?</p>",o:["It needs more memory but fewer computations","It can be applied as two 1D convolutions, which is faster","It makes the filter rotation-invariant","It removes the need for padding"],a:1,e:"k×k per pixel → k + k. For a 7×7 kernel: 49 → 14 multiplications."},
+{w:2,n:"Q5",t:"single",q:"<p>Which is an example of linear filtering?</p>",o:["Thresholding","Gaussian blur","Histogram equalisation","Morphological dilation"],a:1,e:"Gaussian blur is a convolution (weighted sum) — linear. The others are non-linear point or morphological ops."},
+{w:2,n:"Q6",t:"single",q:"<p>Purpose of the scale space in SIFT?</p>",o:["Reduce image size","Detect features at different scales","Increase contrast","Remove noise only"],a:1,e:"DoG pyramid across scales makes keypoints scale-invariant."},
+{w:2,n:"Q7",t:"single",q:"<p>Statements: (1) Filter coefficients must always sum to 1. (2) Increasing brightness by adding a constant image is a point operation. (3) k(a∗b) = (ka)∗(kb). Which are correct?</p>",o:["Only 1","Only 2","1 and 3","All three"],a:1,e:"Only (2). Edge filters sum to 0, so (1) is false. Convolution is linear: k(a∗b) = (ka)∗b, but (ka)∗(kb) = k²(a∗b), so (3) is false."},
+{w:2,n:"Q8",t:"single",q:"<p>Which statement is FALSE?</p>",o:["Moving-average denoising is a global operation","A median filter is non-linear","Gaussian smoothing is a local operation","Convolution with a kernel is shift-invariant"],a:0,e:"Moving average uses only a neighbourhood — it is local."},
+{w:2,n:"Q9",t:"single",q:"<p>A: Gabor filters are used for texture analysis. R: Gabor filters are orientation- and frequency-selective band-pass filters.</p>",o:["A and R true, R explains A","A and R true, R does not explain A","A true, R false","A false, R true"],a:0,e:"Textures are repeated oriented frequencies — exactly what Gabor filters respond to."},
+{w:2,n:"Q10",t:"single",q:"<p>SIFT descriptors are invariant to…</p>",o:["Scale only","Rotation only","Scale, rotation and illumination changes","Any perspective transformation"],a:2,e:"Scale (DoG pyramid), rotation (dominant orientation), illumination (normalised gradient histograms). Only partially robust to affine/perspective."},
+{w:2,n:"Q11",t:"single",miss:1,q:"<p>Main difference between blob and corner detection?</p>",o:["Blobs are circles, corners are rectangles","Blob detection finds regions; corner detection finds points","Blob detection needs colour images","Corner detection is scale-invariant, blob detection is not"],a:1,e:"Blob = region of similar property (e.g. LoG blob). Corner = point where gradients change in two directions (Harris)."},
+{w:2,n:"Q12",t:"num",miss:1,q:"<p>Image</p><pre>[[10, 100, 200],\n [128, 20, 120],\n [10,  40, 160]]</pre><p>Linear contrast stretch to [0, 255]. New value of the centre pixel (20)? (integer)</p>",r:[13,13.5],e:"(20 − 10)/(200 − 10) × 255 = 10/190 × 255 = 13.4 → 13. Use the min (10) and max (200) of the whole image."},
+
+/* WEEK 3 */
+{w:3,n:"Q1",t:"single",tag:"code",q:"<p>x = randint(0,256,(1,150)), seed 2 → reshape (10,5,3). y1 = randn(5,3), y2 = uniform[−10,10) (5,3). Max along last dim of x·y1 and x·y2. Mean of their sum?</p>",o:["875","880","883","870"],a:1,e:"Accepted 880.",code:`x_resize = x.reshape(10, 5, 3)
+y1 = torch.randn(5, 3)
+y2 = torch.rand(5, 3) * 20 - 10          # uniform in [-10, 10)
+mul_output1 = x_resize * y1
+final_output1, _ = torch.max(mul_output1, dim=-1)
+mul_output2 = x_resize * y2
+final_output2, _ = torch.max(mul_output2, dim=-1)`},
+{w:3,n:"Q2",t:"single",tag:"code",miss:1,q:"<p>y_pred = M·v (M 3×2, v 2, seed 0), y_true = [0.3, 0.7, 0.6]. Masked MSE only where y_true > 0.5, sum divided by 3. Loss?</p>",o:["1","2.5","1.5","2"],a:3,e:"Accepted 2. The notebook divides by 3 (all elements), not by the 2 masked ones.",code:`y_pred = torch.matmul(M, v)
+
+mask = (y_true > 0.5).float()
+squared_diff = (y_pred - y_true) ** 2
+masked_squared_diff = squared_diff * mask
+loss = masked_squared_diff.sum() / 3`},
+{w:3,n:"Q3",t:"single",tag:"code",miss:1,q:"<p>After loss.backward(), sum of grad_M.mean() and grad_v.mean()?</p>",o:["2","1.7","2.5","3"],a:0,e:"Accepted 2. A wrong loss in Q2 gives wrong gradients here.",code:`loss.backward()
+grad_M = M.grad
+grad_v = v.grad`},
+{w:3,n:"Q4",t:"single",tag:"code",q:"<p>MLP 10→20→50→5 (ReLU on hidden), seed 2, input randn(32,10). output.mean()×1000?</p>",o:["1.6","2.2","3","1.8"],a:3,e:"Accepted 1.8.",code:`self.fc1 = nn.Linear(10, 20)
+self.fc2 = nn.Linear(20, 50)
+self.fc3 = nn.Linear(50, 5)
+
+def forward(self, x):
+    x = torch.relu(self.fc1(x))
+    x = torch.relu(self.fc2(x))
+    x = self.fc3(x)
+    return x`},
+{w:3,n:"Q5",t:"single",tag:"code",q:"<p>Train that MLP on random data (70 train / 30 test, batch 64, Adam 1e-3, CrossEntropy, 300 epochs, seed 2022). Final <b>train</b> accuracy?</p>",o:["100%","53%","61%","79%"],a:2,e:"Accepted 61%. Labels are random, so the model partly memorises the train set.",code:`from torch.utils.data import TensorDataset, DataLoader
+train_dataset = TensorDataset(x_train, y_train)
+test_dataset  = TensorDataset(x_test, y_test)
+batch_size = 64
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_loader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False)
+
+# train()
+data, target = data.to(device), target.to(device)
+optimizer.zero_grad()
+output = model(data)
+loss = criterion(output, target)
+loss.backward()
+optimizer.step()
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = MultiLayerNN().to(device)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+criterion = nn.CrossEntropyLoss()`},
+{w:3,n:"Q6",t:"single",tag:"code",q:"<p>Final <b>test</b> accuracy of the same run?</p>",o:["30%","40%","15%","25%"],a:2,e:"Accepted 15%. Random labels: test accuracy stays near or below chance (20% for 5 classes)."},
+
+/* WEEK 4 */
+{w:4,n:"Q1",t:"single",q:"<p>Which statement is true?</p>",o:["L2 regularisation gives sparser weights than L1","A single McCulloch–Pitts neuron can implement XOR","Dropout drops each neuron with probability p during training and scales activations by the keep probability (1 − p) at test time","Batch normalisation removes the need for any learning rate"],a:2,e:"L1 (not L2) promotes sparsity; XOR is not linearly separable."},
+{w:4,n:"Q2",t:"single",q:"<p>Layer a → b with weight w<sub>ij</sub> from a<sub>i</sub> to b<sub>j</sub>. S1: ∂L/∂w<sub>ij</sub> = ∂L/∂b<sub>j</sub> · a<sub>i</sub>. S2: w<sub>ij</sub> is not the only weight connecting a<sub>i</sub> and b<sub>j</sub>.</p>",o:["Both true","S1 true, S2 false","S1 false, S2 true","Both false"],a:1,e:"b_j = Σ w_ij a_i, so ∂b_j/∂w_ij = a_i. In a fully connected layer exactly one weight joins a_i to b_j."},
+{w:4,n:"Q3",t:"multi",miss:1,q:"<p>Which are true? (select all)</p>",o:["σ(x) = (tanh(x/2) − 1)/2","The derivative of the sigmoid is symmetric about the y-axis","Sigmoid is centred at 0 and tanh at 0.5","The sigmoid's gradient vanishes when it saturates"],a:[1,3],e:"Correct identity is σ(x) = (tanh(x/2) + 1)/2. σ′(x) = σ(x)(1−σ(x)) is even. Tanh is zero-centred; sigmoid's output is centred at 0.5.",viz:"sigmoid"},
+{w:4,n:"Q4",t:"single",miss:1,q:"<p>Mixup with λ = 0.4 on x₁.</p><pre>x₁=[[2,3,4],[4,7,12],[1,7,6]]  y₁=[0,1,0]\nx₂=[[10,6,2],[8,12,8],[2,3,6]]  y₂=[0,0,1]</pre><p>Mixed sample?</p>",o:["x̃=[[6.8,4.8,2.8],[6.4,10,9.6],[1.6,4.6,6]], ỹ=[0,0.4,0.6]","x̃=[[5.2,4.2,3.2],[5.6,9,10.4],[1.4,5.4,6]], ỹ=[0,0.6,0.4]","x̃=[[6,4.5,3],[6,9.5,10],[1.5,5,6]], ỹ=[0,0.5,0.5]","x̃=[[6.8,4.8,2.8],[6.4,10,9.6],[1.6,4.6,6]], ỹ=[0,0.6,0.4]"],a:0,e:"0.4·x₁ + 0.6·x₂: 0.4·2 + 0.6·10 = 6.8. Labels: 0.4·[0,1,0] + 0.6·[0,0,1] = [0, 0.4, 0.6]. The weight on y must match the weight on x."},
+{w:4,n:"Q5",t:"single",q:"<p>AlexNet. P: local response normalisation mimics lateral inhibition. Q: convolutional layers hold most of the parameters but little of the computation.</p>",o:["Only P","Only Q","Both","Neither"],a:0,e:"Conv layers hold ~5% of params but most of the FLOPs. The FC layers hold most parameters."},
+{w:4,n:"Q6a",t:"num",q:"<p>Input 10×10×3. Parameters of a fully connected layer with 2 neurons (with bias)?</p>",r:[602,602],e:"300 inputs × 2 + 2 biases = 602. (Original question's answer was 'None of the above' because no option matched these counts.)"},
+{w:4,n:"Q6b",t:"num",q:"<p>Same input, a conv layer with three 2×2 filters, stride 2 (with bias). Parameters?</p>",r:[39,39],e:"Each filter 2·2·3 = 12 + 1 bias = 13. Three filters → 39."},
+{w:4,n:"Q7",t:"single",q:"<p>Which statement is FALSE?</p>",o:["Each filter produces one feature map","The number of feature maps depends on the input depth, not the number of filters","Padding can preserve spatial size","Pooling reduces spatial dimensions"],a:1,e:"Output feature maps = number of filters. Input depth only sets each filter's depth."},
+{w:4,n:"Q8",t:"num",q:"<p>Compute ELU(tanh(x)) for x = −1.3, α = 0.3. (3 decimals)</p>",r:[-0.19,-0.15],e:"tanh(−1.3) = −0.862. ELU = 0.3·(e^−0.862 − 1) = 0.3·(0.422 − 1) = −0.173."},
+{w:4,n:"Q9",t:"num",q:"<p>RMSProp: θ = 1.2, g = 0.85, r<sub>prev</sub> = 0.7, η = 0.9, ρ = 0.3, δ = 1e−7. New θ? (3 decimals)</p>",r:[0.286,0.306],e:"r = 0.3·0.7 + 0.7·0.85² = 0.21 + 0.506 = 0.716. Δθ = −0.9·0.85/√0.716 = −0.904. θ = 1.2 − 0.904 = 0.296."},
+{w:4,n:"Q10",t:"num",q:"<p>Input 32×32×6, filter 7×7×3, stride 1 in all dims, no padding. Output <b>width</b>?</p>",r:[26,26],e:"(32 − 7)/1 + 1 = 26."},
+{w:4,n:"Q11",t:"num",q:"<p>Same setup. Output <b>height</b>?</p>",r:[26,26],e:"(32 − 7)/1 + 1 = 26."},
+{w:4,n:"Q12",t:"num",miss:1,q:"<p>Same setup. Output <b>depth</b>?</p>",r:[4,4],e:"The filter also slides along depth: (6 − 3)/1 + 1 = 4."},
+...[["Q13","(1,1)",8,0],["Q14","(1,4)",10,0],["Q15","(2,2)",0,1],["Q16","(3,1)",0,1],["Q17","(3,3)",2,1],["Q18","(4,3)",0,0]].map(([n,c,v,m])=>({w:4,n,t:"num",miss:m,viz:"pool-max",q:`<p>Max-pool 2×2, stride 2 backprop. Gradient at location <b>${c}</b> (row, col, 1-indexed)?</p>`,r:[v,v],e:"Only the max cell of each window receives that window's gradient: 156 → 8, 240 → 10, 254 at (4,2) → 14, 87 at (3,3) → 2. Every other cell gets 0."})),
+...[["Q19","(1,1)",2],["Q20","(1,4)",2.5],["Q21","(2,2)",2],["Q22","(3,1)",3.5],["Q23","(3,3)",0.5],["Q24","(4,3)",0.5]].map(([n,c,v])=>({w:4,n,t:"num",miss:1,viz:"pool-avg",q:`<p>Same map with <b>average</b> pooling 2×2, stride 2. Gradient at <b>${c}</b>?</p>`,r:[v,v],e:"Every cell gets window-gradient / 4: top-left 8/4 = 2, top-right 10/4 = 2.5, bottom-left 14/4 = 3.5, bottom-right 2/4 = 0.5."})),
+
+/* WEEK 5 */
+{w:5,n:"Q1",t:"single",tag:"code",miss:1,q:"<p>Shape of the conv weight inside conv_block2 (Conv2d 32→16, k=7)?</p>",o:["32 × 16 × 5 × 5","32 × 32 × 6 × 6","16 × 32 × 7 × 7","32 × 16 × 4 × 4"],a:2,e:"PyTorch: (out_channels, in_channels, kH, kW) = (16, 32, 7, 7).",viz:"cnn",code:`self.conv_block1 = nn.Sequential(
+    nn.Conv2d(1, 32, kernel_size=5, stride=1, padding=2),
+    nn.BatchNorm2d(32), nn.ReLU(),
+    nn.MaxPool2d(kernel_size=2, stride=2))
+self.conv_block2 = nn.Sequential(
+    nn.Conv2d(32, 16, kernel_size=7, stride=1, padding=3),
+    nn.BatchNorm2d(16), nn.ReLU(),
+    nn.MaxPool2d(kernel_size=2, stride=2))
+self.fc = nn.Linear(16 * 7 * 7, num_classes)
+
+def forward(self, x):
+    output = self.conv_block1(x)
+    output = self.conv_block2(output)
+    output = output.reshape(output.size(0), -1)
+    output = self.fc(output)
+    return output`},
+{w:5,n:"Q2",t:"single",tag:"code",miss:1,q:"<p>Total trainable parameters of the model?</p>",o:["26,032","33,786","33,824","33,882"],a:3,e:"conv1 32·1·25 + 32 = 832 · BN1 64 · conv2 16·32·49 + 16 = 25,104 · BN2 32 · fc 784·10 + 10 = 7,850 → 33,882. BN running stats are buffers, not parameters.",viz:"cnn"},
+{w:5,n:"Q3",t:"single",tag:"code",miss:1,q:"<p>Final test accuracy after 10 epochs (Adam 1e-3)?</p>",o:["57%","76%","84%","99%"],a:3,e:"A small CNN with BatchNorm on MNIST reaches ~99%. 84% means a bug (missing zero_grad, wrong normalisation…).",code:`device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+transform = transforms.Compose([transforms.ToTensor(),
+                                transforms.Normalize((0.1307,), (0.3081,))])
+train_dataset = datasets.MNIST('./data', train=True,  download=True, transform=transform)
+test_dataset  = datasets.MNIST('./data', train=False, download=True, transform=transform)
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, generator=g, num_workers=0)
+test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=0)
+
+model = ConvolutionNet(num_classes).to(device)
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+# loop: images, labels -> device; optimizer.zero_grad(); output = model(images)
+#       loss = criterion(output, labels); loss.backward(); optimizer.step()`},
+{w:5,n:"Q4",t:"single",tag:"code",q:"<p>Among {0, 9, 5, 6}, which centroid is closest to digit 7's centroid?</p>",o:["0","9","5","6"],a:1,e:"7 and 9 share a strong diagonal/vertical stroke and are commonly confused.",code:`images = images.to(device)
+embedding = model.conv_block2(model.conv_block1(images))
+embedding = embedding.reshape(embedding.size(0), -1)
+embeddings.append(embedding.cpu().numpy())
+labels.append(batch_labels.numpy())`},
+{w:5,n:"Q5",t:"single",tag:"code",q:"<p>Among {5, 0, 7, 4}, which centroid is farthest from digit 6's centroid?</p>",o:["5","0","7","4"],a:2,e:"6 is round and closed at the bottom; 7 is open strokes — most dissimilar."},
+{w:5,n:"Q6",t:"single",tag:"code",miss:1,q:"<p>Shape of the <code>filters</code> array from the first conv layer?</p>",o:["(32, 16, 5, 5)","(32, 1, 5, 5)","(16, 32, 5, 5)","(16, 1)"],a:1,e:"Conv2d(1→32, k=5): (out=32, in=1, 5, 5). MNIST is grayscale, so in = 1.",code:`filters = model.conv_block1[0].weight.data.cpu().numpy()`},
+
+/* WEEK 6 */
+{w:6,n:"Q1",t:"single",q:"<p>Match YOLO versions with their key idea.</p>",o:["v1 → single grid-cell prediction · v2 → Darknet-19 · v3 → feature pyramid (multi-scale) · v4 → CSPDarknet backbone","v1 → Darknet-19 · v2 → single grid-cell · v3 → CSPDarknet · v4 → FPN","v1 → single grid-cell · v2 → FPN · v3 → Darknet-19 · v4 → CSPDarknet","v1 → CSPDarknet · v2 → Darknet-19 · v3 → FPN · v4 → single grid-cell"],a:0,e:"Key 1→v, 2→iii, 3→iv, 4→ii."},
+{w:6,n:"Q2",t:"single",q:"<p>Match architecture with idea.</p>",o:["VGG → 3×3 convs · EfficientNet → depthwise separable convs · GoogLeNet → 1×1 convs · ResNet → identity mapping","VGG → 1×1 convs · EfficientNet → identity mapping · GoogLeNet → 3×3 convs · ResNet → depthwise","VGG → 3×3 convs · EfficientNet → 1×1 convs · GoogLeNet → depthwise · ResNet → identity mapping","VGG → identity mapping · EfficientNet → depthwise · GoogLeNet → 1×1 · ResNet → 3×3"],a:0,e:"Key 1→iii, 2→v, 3→i, 4→ii."},
+{w:6,n:"Q3",t:"single",q:"<p>Which statement about ConvNeXt is INCORRECT?</p>",o:["It uses large 7×7 depthwise convolutions","It uses LayerNorm instead of BatchNorm","It replaces the ResNet bottleneck and drops ReLU in favour of Swish","It uses an inverted bottleneck design"],a:2,e:"ConvNeXt uses GELU, not Swish."},
+{w:6,n:"Q4a",t:"num",q:"<p>11-point AP: precision at recall 0.1…1.0 is 0.90, 0.85, …, 0.45 (step −0.05), and P(0) = 1. AP? (2 decimals)</p>",r:[0.70,0.71],e:"(1 + 0.90 + 0.85 + … + 0.45)/11 = (1 + 6.75)/11 = 0.7045."},
+{w:6,n:"Q4b",t:"num",q:"<p>Other class APs are 0.78 and 0.72. mAP over the three classes? (2 decimals)</p>",r:[0.73,0.74],e:"(0.705 + 0.78 + 0.72)/3 = 0.735 → 0.73."},
+{w:6,n:"Q5",t:"single",q:"<p>Match task with output: instance seg, classification, semantic seg, detection.</p>",o:["Instance → '4 dogs and the pixel shape of each' · Classification → 'there is a dog' · Semantic → 'dog pixels are here' · Detection → '4 dogs, with boxes'","Instance → 'there is a dog' · Classification → '4 dogs, boxes' · Semantic → 'dog pixels' · Detection → 'shape of each dog'","Instance → 'dog pixels' · Classification → 'there is a dog' · Semantic → 'shape of each dog' · Detection → '4 dogs'","All produce pixel masks"],a:0,e:"Key 1→ii, 2→iii, 3→i, 4→iv. Semantic doesn't separate individual dogs; instance does."},
+{w:6,n:"Q6",t:"single",q:"<p>Which is FALSE?</p>",o:["ResNet adds the block input to its output","DenseNet connects each layer only to the last layer","Inception runs filters of several sizes in parallel","VGG stacks small 3×3 convolutions"],a:1,e:"DenseNet connects each layer to ALL subsequent layers (concatenation)."},
+{w:6,n:"Q7",t:"single",miss:1,q:"<p>Which detector introduced the RoI pooling layer?</p>",o:["R-CNN","Fast R-CNN","YOLO","SSD"],a:1,e:"Fast R-CNN runs the CNN once on the whole image and pools a fixed-size feature per proposal. R-CNN warps every crop and runs a CNN per region."},
+{w:6,n:"Q8",t:"num",q:"<p>Two 12×12 boxes overlap in an 8×8 region. IoU in % (nearest integer)?</p>",r:[28,29],viz:"iou",e:"64 / (144 + 144 − 64) = 64/224 = 28.6%."},
+{w:6,n:"Q9",t:"single",q:"<p>Integral image of [[3,7,2],[5,4,6],[8,1,9]]?</p>",o:["[[3,10,12],[8,19,27],[16,28,45]]","[[3,7,2],[8,11,8],[16,12,17]]","[[3,10,12],[5,9,15],[8,9,18]]","[[3,10,12],[8,19,27],[16,27,45]]"],a:0,e:"ii(x,y) = sum of all pixels above and left, inclusive. Bottom-right = total = 45; ii(3,2) = 3+7+5+4+8+1 = 28."},
+{w:6,n:"Q10",t:"multi",q:"<p>Which are true? (select all)</p>",o:["Transfer learning with a small, dissimilar target set: reuse only the early (general) layers and train a new classifier","A 3D conv kernel moves in 3 directions and its input is 4D","Receptive field shrinks as you go deeper","EfficientNet-B6 needs fewer FLOPs than B3","A 1×1 convolution needs padding to keep spatial size"],a:[0,1],e:"Receptive field grows with depth; B6 is larger than B3; 1×1 conv never needs padding."},
+{w:6,n:"Q11",t:"num",q:"<p>Standard conv: Df = 128, M = 16 in, N = 32 out, k = 5, padded, no bias. Parameters?</p>",r:[12800,12800],e:"5·5·16·32 = 12,800."},
+{w:6,n:"Q12",t:"num",q:"<p>Same conv. Computational cost (MACs)?</p>",r:[209715200,209715200],e:"12,800 × 128 × 128 = 209,715,200."},
+{w:6,n:"Q13",t:"num",q:"<p>Depthwise separable, same dims. Depthwise parameters?</p>",r:[400,400],e:"5·5·16 = 400."},
+{w:6,n:"Q14",t:"num",q:"<p>Depthwise cost (MACs)?</p>",r:[6553600,6553600],e:"400 × 128² = 6,553,600."},
+{w:6,n:"Q15",t:"num",q:"<p>Pointwise (1×1) parameters?</p>",r:[512,512],e:"16·32 = 512."},
+{w:6,n:"Q16",t:"num",q:"<p>Pointwise cost (MACs)?</p>",r:[8388608,8388608],e:"512 × 128² = 8,388,608. Total separable ≈ 14.9M vs 209.7M standard (~14× cheaper)."},
+
+/* WEEK 7 */
+{w:7,n:"Q1",t:"single",tag:"code",miss:1,q:"<p>Integral image of image.jpg: values of s[90][50], ii[350][750], region_sum(100,130,380,665)?</p>",o:["2880, 12688949, 13923164","4880, 36188949, 25444096","5313, 37465641, 25108243","7313, 56188949, 46323164"],a:2,e:"Accepted option 3. s is the cumulative row sum; ii adds row sums down the columns.",code:`def populate_row_sum():
+    for x in range(h):
+        s[x][0] = img_arr[x][0]
+        for y in range(1, w):
+            s[x][y] = s[x][y-1] + img_arr[x][y]
+
+def populate_integral_image():
+    for y in range(w):
+        ii[0][y] = s[0][y]
+    for x in range(1, h):
+        for y in range(w):
+            ii[x][y] = ii[x-1][y] + s[x][y]
+
+def region_sum(x1, y1, x2, y2):
+    if x2 < 0 or y2 < 0:
+        return 0
+    d = ii[x2][y2]
+    a = 0
+    if x1 > 0 and y1 > 0:
+        a = ii[x1-1][y1-1]
+    b = 0
+    if x1 > 0:
+        b = ii[x1-1][y2]
+    c = 0
+    if y1 > 0:
+        c = ii[x2][y1-1]
+    return d + a - (b + c)`},
+{w:7,n:"Q2",t:"single",tag:"code",miss:1,q:"<p>Fast R-CNN multi-task loss: logits [1.4315, 2.9862, 0.4019, 1.5501], true class 1, α = 0.02, offsets for class 1 = [63,42,103,75], target [58,35,108,81], SmoothL1 sum.</p>",o:["0.6317","0.7329","0.9435","0.8417"],a:3,e:"softmax p₁ ≈ 0.656 → −log = 0.42. Diffs 5,7,5,6 → SmoothL1 = 4.5+6.5+4.5+5.5 = 21. Loss = 0.42 + 0.02·21 = 0.84.",code:`self.smooth_l1_loss = nn.SmoothL1Loss(reduction='sum')
+
+pred = torch.softmax(pred_logits, dim=-1)
+true_class_index = torch.argmax(true_class)
+L_cls = -torch.log(pred[true_class_index])
+t_u = bounding_box_offsets[true_class_index]
+L_loc = 0
+if true_class_index > 0:
+    L_loc = self.smooth_l1_loss(t_u, bounding_box_target)
+Loss = L_cls + self.alpha * L_loc`},
+{w:7,n:"Q3",t:"single",tag:"code",miss:1,q:"<p>Dice loss, seed 1: pred = sigmoid(randn(1,1,256,256)), target = random binary. Denominator |P| + |T|.</p>",o:["0.5018","0.6324","0.7846","0.8722"],a:0,e:"Random vs random → Dice ≈ 0.5. 2·Σ(p·t) ≈ 2·0.25N, |P|+|T| ≈ 0.5N + 0.5N = N → Dice ≈ 0.5.",code:`pred_flat = pred.view(-1)
+target_flat = target.view(-1)
+intersection = (pred_flat * target_flat).sum()
+union = pred_flat.sum() + target_flat.sum()
+dice_coeff = (2 * intersection + smooth) / (union + smooth)
+return 1 - dice_coeff`},
+{w:7,n:"Q4",t:"single",tag:"code",q:"<p>Parameters in LSTM(input 1, hidden 5, 1 layer) + Linear(5→1)?</p>",o:["117","207","166","236"],a:2,e:"LSTM: 4·(5·1 + 5·5 + 5 + 5) = 4·40 = 160 (PyTorch has two bias vectors). fc: 5 + 1 = 6. Total 166."},
+{w:7,n:"Q5",t:"single",tag:"code",miss:1,q:"<p>Train MSE after 350 epochs (hidden 5, Adam 1e-3, seed 2)?</p>",o:["0.0058","0.1204","0.0971","0.2486"],a:2,e:"Small model, small lr → partial fit (~0.097). 0.0058 means the forward pass differed from the notebook.",code:`self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+self.fc = nn.Linear(hidden_size, num_classes)
+
+def forward(self, x):
+    output, (hidden_out, cell_out) = self.lstm(x)
+    hidden_out = hidden_out.view(-1, self.hidden_size)
+    out = self.fc(hidden_out)
+    return out
+
+# training loop
+train_predict = lstm_model(x_train)
+optimizer.zero_grad()
+loss = criterion(train_predict, y_train)
+loss.backward()
+optimizer.step()`},
+{w:7,n:"Q6",t:"single",tag:"code",miss:1,q:"<p>Test MSE of the same model?</p>",o:["0.0218","0.0059","0.0097","0.0975"],a:3,e:"≈ 0.0975, close to train — the cosine wave repeats, so it generalises the same."},
+
+/* WEEK 8 */
+{w:8,n:"Q1",t:"single",miss:1,q:"<p>Match RNN type with application.</p>",o:["One-to-many → music generation · Many-to-one → sentiment analysis · Many-to-many (equal) → named-entity recognition · Encoder–decoder → English→Hindi translation","One-to-many → sentiment · Many-to-one → music · Many-to-many → translation · Encoder–decoder → NER","One-to-many → NER · Many-to-one → sentiment · Many-to-many → music · Encoder–decoder → translation","One-to-many → translation · Many-to-one → NER · Many-to-many → sentiment · Encoder–decoder → music"],a:0,e:"Key 1→iv, 2→i, 3→iii, 4→ii."},
+{w:8,n:"Q2",t:"single",miss:1,q:"<p>Attention weights [[0.25, 0.5],[0.25, 0]] over features [[v1, v2],[v3, v4]]. Soft and hard attention context?</p>",o:["Soft = (v1 + 2v2 + v3)/4, Hard = v2","Soft = (v1 + v2 + v3 + v4)/4, Hard = v2","Soft = (v1 + 2v2 + v3)/4, Hard = v1","Soft = 0.25v1 + 0.5v2, Hard = v4"],a:0,e:"Soft = weighted sum 0.25v1 + 0.5v2 + 0.25v3. Hard picks the highest-weight location (v2)."},
+{w:8,n:"Q3",t:"multi",miss:1,q:"<p>Which are true? (select all)</p>",o:["An RNN's h_t implicitly depends on all earlier hidden states","Generating cricket commentary for a video is a sequence-learning problem","An RNN's parameter count grows with sequence length","Classifying a batch of 16 independent images is a sequential task"],a:[0,1],e:"Weights are shared across time, so parameter count is independent of length."},
+{w:8,n:"Q4",t:"single",miss:1,q:"<p>Which is true?</p>",o:["Attention cannot be used with bidirectional RNNs","Captioning models with attention cannot be trained end-to-end","The vanilla Transformer relies on recurrence","None of the above"],a:3,e:"All three are false."},
+{w:8,n:"Q5",t:"single",miss:1,q:"<p>Boosting image captioning — match the five variants A1–A5 (lecture table). Accepted mapping?</p>",o:["1→iii, 2→iv, 3→v, 4→ii, 5→i","1→i, 2→iii, 3→iv, 4→ii, 5→v","1→v, 2→iv, 3→iii, 4→i, 5→ii","1→iii, 2→ii, 3→v, 4→iv, 5→i"],a:0,e:"Memorise: 1→iii, 2→iv, 3→v, 4→ii, 5→i (Boosting Image Captioning with Attributes, LSTM-A1…A5)."},
+{w:8,n:"Q6",t:"multi",miss:1,q:"<p>Which are true? (select all)</p>",o:["An autoencoder is equivalent to PCA if it uses non-linear activations","With global attention on temporal data, alignment weights are learnt for encoder hidden states at all time steps","Positional encoding conveys order information in the transformer","You cannot generate captions of different tone/style for the same image","Autoencoders cannot compress because input and output dimensions differ"],a:[1,2],e:"AE ≡ PCA needs LINEAR activations. Styled captioning exists. AE input and output dims are equal and the bottleneck compresses."},
+{w:8,n:"Q7",t:"single",miss:1,q:"<p>Hard vs soft attention — which is true?</p>",o:["Hard attention is smooth and differentiable","Variance reduction techniques are used to train hard attention models","Soft attention is cheaper than hard attention when the input is large","All of the above","None of the above"],a:1,e:"Hard attention samples a location (non-differentiable) → REINFORCE with variance reduction. Soft attends everywhere, so it is costlier for large inputs."},
+{w:8,n:"Q8",t:"single",miss:1,q:"<p>Match attention mechanism with alignment score.</p>",o:["General → s_tᵀW_a h_i · Content-based → cos(s_t, h_i) · Dot-product → s_tᵀh_i · Additive → v_aᵀ tanh(W_a[s_t; h_i]) · Location-based → softmax(W_a s_t)","General → s_tᵀh_i · Content → v_aᵀtanh(..) · Dot → s_tᵀW_a h_i · Additive → cos · Location → softmax(W_a s_t)","General → cos · Content → s_tᵀW_a h_i · Dot → s_tᵀh_i · Additive → softmax(W_a s_t) · Location → v_aᵀtanh(..)","General → v_aᵀtanh(..) · Content → softmax(W_a s_t) · Dot → s_tᵀh_i · Additive → s_tᵀW_a h_i · Location → cos"],a:0,e:"Key 1→v, 2→iv, 3→iii, 4→i, 5→ii. Location-based uses only the decoder state s_t."},
+{w:8,n:"Q9",t:"multi",miss:1,q:"<p>Which are true? (select all)</p>",o:["RNN parameters grow exponentially with sequence length","Long sentences give rise to vanishing gradients","ECG signal classification is a sequence-learning problem","RNNs can have more than one hidden layer"],a:[1,2,3],e:"Parameters are shared over time."},
+...[["Q10","U1 (input → D1)",33792,"132 × 256 = 33,792"],["Q11","V1 (D1 → D1)",65536,"256 × 256 = 65,536"],["Q12","U2 (D1 → D2)",32768,"256 × 128 = 32,768"],["Q13","V2 (D2 → D2)",16384,"128 × 128 = 16,384"],["Q14","W (D2 → output)",1920,"128 × 15 = 1,920"]].map(([n,m,v,e])=>({w:8,n,t:"num",miss:1,viz:"rnn",q:`<p>2-layer RNN classifier: input ∈ ℝ¹³², D1 ∈ ℝ²⁵⁶, D2 ∈ ℝ¹²⁸, 15 classes, no bias. Number of weights in <b>${m}</b>?</p>`,r:[v,v],e})),
+...[["Q15","forget gate f_t",[0.679,0.699],"f = σ(0.1·2 + 0.2·3 + 0) = σ(0.8) = 0.690"],["Q16","input gate i_t",[0.099,0.119],"i = σ(−0.1·2 − 0.3·3 − 1) = σ(−2.1) = 0.109"],["Q17","output gate o_t",[0.172,0.192],"o = σ(−1.2·2 − 0.2·3 + 1.5) = σ(−1.5) = 0.182"],["Q18","candidate C̃_t",[0.988,1.008],"C̃ = tanh(3·2 − 1·3 + 0.5) = tanh(3.5) = 0.998"],["Q19","cell state C_t",[-0.246,-0.226],"C = 0.690·(−0.5) + 0.109·0.998 = −0.236"],["Q20","hidden state h_t",[-0.052,-0.032],"h = 0.182·tanh(−0.236) = 0.182·(−0.232) = −0.042"]].map(([n,m,r,e])=>({w:8,n,t:"num",miss:1,viz:"lstm",q:`<p>LSTM: x<sub>t</sub> = 3, h<sub>t−1</sub> = 2, W<sub>f</sub> = [0.1, 0.2], b<sub>f</sub> = 0, W<sub>i</sub> = [−0.1, −0.3], b<sub>i</sub> = −1, W<sub>o</sub> = [−1.2, −0.2], b<sub>o</sub> = 1.5, W<sub>C</sub> = [3, −1], b<sub>C</sub> = 0.5, C<sub>t−1</sub> = −0.5. Weights act on [h<sub>t−1</sub>, x<sub>t</sub>]. Compute the <b>${m}</b> (3 decimals).</p>`,r,e})),
+...[["Q21","update gate z_t",[0.767,0.787],"z = σ(1.1·(−0.5) + 1.2·1.5) = σ(1.25) = 0.777"],["Q22","reset gate r_t",[0.187,0.207],"r = σ(−1.1·(−0.5) − 1.3·1.5) = σ(−1.4) = 0.198"],["Q23","candidate h̃_t",[-0.582,-0.562],"h̃ = tanh(−1·(r·h₋₁) − 0.5·1.5) = tanh(0.099 − 0.75) = −0.572"],["Q24","hidden state h_t",[-0.566,-0.546],"h = (1 − 0.777)(−0.5) + 0.777·(−0.572) = −0.556"]].map(([n,m,r,e])=>({w:8,n,t:"num",miss:1,viz:"lstm",q:`<p>GRU: x<sub>t</sub> = 1.5, h<sub>t−1</sub> = −0.5, W<sub>z</sub> = [1.1, 1.2], W<sub>r</sub> = [−1.1, −1.3], W = [−1, −0.5], no bias. Weights act on [h<sub>t−1</sub>, x<sub>t</sub>]. Compute <b>${m}</b> (3 decimals).</p>`,r,e})),
+
+/* WEEK 9 */
+{w:9,n:"Q1",t:"single",tag:"code",miss:1,q:"<p>Undercomplete autoencoder 784→128→64→32→16 (mirror decoder, sigmoid output), MSE, Adam default, batch 128. Loss at end of epoch 10?</p>",o:["0.0559","0.0212","0.2321","0.9452"],a:1,e:"Accepted 0.0212.",code:`device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
+
+self.encoder = nn.Sequential(
+    nn.Linear(28*28, 128), nn.ReLU(),
+    nn.Linear(128, 64), nn.ReLU(),
+    nn.Linear(64, 32), nn.ReLU(),
+    nn.Linear(32, 16))
+self.decoder = nn.Sequential(
+    nn.Linear(16, 32), nn.ReLU(),
+    nn.Linear(32, 64), nn.ReLU(),
+    nn.Linear(64, 128), nn.ReLU(),
+    nn.Linear(128, 28*28), nn.Sigmoid())
+
+model = Autoencoder().to(device)
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters())
+for epoch in range(num_epochs):
+    ...
+    output = model(img)
+    loss = criterion(output, img)
+    optimizer.zero_grad(); loss.backward(); optimizer.step()`},
+{w:9,n:"Q2",t:"single",tag:"code",miss:1,q:"<p>Overcomplete autoencoder 784→512→1024→2048 and back. Loss at end of epoch 10?</p>",o:["0.0052","0.0509","0.2320","0.0019"],a:0,e:"Accepted 0.0052. Bigger code than input → near-identity mapping → lower reconstruction loss than the undercomplete one.",code:`self.encoder = nn.Sequential(
+    nn.Linear(28*28, 512), nn.ReLU(),
+    nn.Linear(512, 1024), nn.ReLU(),
+    nn.Linear(1024, 2048))
+self.decoder = nn.Sequential(
+    nn.Linear(2048, 1024), nn.ReLU(),
+    nn.Linear(1024, 512), nn.ReLU(),
+    nn.Linear(512, 28*28), nn.Sigmoid())
+
+output = over_com_model(img)
+loss = criterion(output, img)
+over_com_optimizer.zero_grad(); loss.backward(); over_com_optimizer.step()`},
+{w:9,n:"Q3",t:"single",tag:"code",miss:1,q:"<p>Multi-head attention (64 → Q/K/V 32, 8 heads, out 32), q,k,v = rand(4,2,64), seed 2024. Maximum value in the attention tensor?</p>",o:["0.2312","0.7851","0.5412","0.9452"],a:2,e:"Accepted 0.5412. With seq length 2, each softmax row has two entries, so values hover around 0.5.",viz:"mha",code:`self.op_dim = config['OP_DIM']
+self.n_heads = config['NUM_HEADS']
+self.query_dim = config['QO_DIM']
+self.value_dim = config['VO_DIM']
+self.QTrans = nn.Linear(config['QI_DIM'], config['QO_DIM'])
+self.KTrans = nn.Linear(config['KI_DIM'], config['QO_DIM'])
+self.VTrans = nn.Linear(config['VI_DIM'], config['VO_DIM'])
+self.OTrans = nn.Linear(config['VO_DIM'], config['OP_DIM'])
+
+Q = self.QTrans(q_inp); K = self.KTrans(k_inp); V = self.VTrans(v_inp)
+Q = Q.view(batch_size, seq_length, self.n_heads, -1).permute(0, 2, 1, 3)
+K = K.view(batch_size, seq_length, self.n_heads, -1).permute(0, 2, 1, 3)
+V = V.view(batch_size, seq_length, self.n_heads, -1).permute(0, 2, 1, 3)
+energy = torch.matmul(Q, K.permute(0, 1, 3, 2)) / self.scale
+attention = torch.softmax(energy, dim=-1)
+
+d = MultiHeadAttention(config)
+x, y = d(q, k, v, ret_atn=True)
+print(y.max())`},
+{w:9,n:"Q4",t:"single",tag:"code",miss:1,q:"<p>SimpleViT on MNIST (5 epochs). Validation loss saturates after how many epochs (drop < 5% of previous)?</p>",o:["1","Does not saturate","2","4"],a:1,e:"Val loss keeps dropping by more than 5% every epoch within 5 epochs.",viz:"vit",code:`self.img_size = img_size
+self.patch_size = patch_size
+self.n_patches = (img_size // patch_size) ** 2
+self.proj = nn.Conv2d(in_channels, embed_dim, kernel_size=patch_size, stride=patch_size)
+def forward(self, x):
+    x = self.proj(x)          # (B, 64, 4, 4)
+    x = x.flatten(2)          # (B, 64, 16)
+    x = x.transpose(1, 2)     # (B, 16, 64)
+    return x
+
+# SimpleViT
+self.patch_embed = PatchEmbedding(img_size, patch_size, in_channels, embed_dim)
+def forward(self, x):
+    x = self.patch_embed(x)
+    cls_tokens = self.cls_token.expand(x.shape[0], -1, -1)
+    x = torch.cat((cls_tokens, x), dim=1)
+    x = x + self.pos_embed
+    x = self.transformer(x)
+    x = x[:, 0]
+    x = self.fc(x)
+    return x`},
+{w:9,n:"Q5",t:"single",tag:"code",miss:1,q:"<p>ViT validation loss at the end of epoch 5?</p>",o:["1.450","0.3441","0.783","0.1157"],a:3,e:"Accepted 0.1157.",code:`transform = transforms.Compose([transforms.ToTensor(),
+                                transforms.Normalize((0.1307,), (0.3081,))])
+dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model = SimpleViT().to(device)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+# train: images, labels = images.to(device), labels.to(device)
+#        optimizer.zero_grad(); outputs = model(images); loss = criterion(outputs, labels)
+#        loss.backward(); optimizer.step(); train_loss += loss.item()
+# train_loss /= len(train_loader); train_losses.append(train_loss)
+# val:   model.eval(); ... val_loss += loss.item()
+# val_loss /= len(val_loader); val_losses.append(val_loss)`},
+{w:9,n:"Q6",t:"single",tag:"code",miss:1,q:"<p>ViT test accuracy?</p>",o:["96.80%","50.39%","85.30%","06.69%"],a:0,e:"Accepted 96.80%."},
+
+/* WEEK 10 */
+{w:10,n:"Q1",t:"single",q:"<p>Why is Segment Anything (SAM) useful for data annotation?</p>",o:["It produces perfect masks","It can segment any object, even ones not seen in training","It needs fewer computational resources","It labels all objects with no user input"],a:1,e:"Promptable, zero-shot segmentation."},
+{w:10,n:"Q2",t:"single",q:"<p>Main advantage of DETR?</p>",o:["Uses an anchor-based approach","Eliminates region proposals and anchor boxes, simplifying the pipeline","Needs fewer training epochs","Only works on high-resolution images"],a:1,e:"Set prediction with bipartite matching. DETR actually needs MORE epochs."},
+{w:10,n:"Q3",t:"single",q:"<p>Effect of patch size in a ViT?</p>",o:["Smaller patches give better local features but increase computational cost","Larger patches always improve performance","Smaller patches are cheaper but miss global context","Patch size has no impact"],a:0,e:"Tokens = (H/p)², and attention cost ∝ tokens²."},
+{w:10,n:"Q4",t:"single",q:"<p>Key difference of the Swin Transformer from ViT?</p>",o:["Global attention everywhere in every layer","Hierarchical structure with shifted windows for local attention, scaling to larger images","Designed only for small images","Replaces self-attention with convolutions"],a:1,e:"Window attention makes cost linear in image size."},
+{w:10,n:"Q5",t:"single",q:"<p>Purpose of the class token in a ViT?</p>",o:["Encodes patch positions","Serves as the representation of the whole image used for classification","Acts like a softmax layer","Stores each layer's output"],a:1,e:"Its final state feeds the classification head."},
+{w:10,n:"Q6",t:"single",q:"<p>Why do ViTs need large datasets?</p>",o:["They are more data-efficient than CNNs","They lack the inductive biases of convolutions, so they must learn structure from data","Self-attention reduces the need for data","They overfit more easily without data"],a:1,e:"No built-in locality or translation equivariance."},
+{w:10,n:"Q7",t:"single",q:"<p>Primary challenge in training GANs?</p>",o:["Maximising the discriminator loss","Keeping generator and discriminator learning in balance","Training the generator faster than the discriminator","Reducing generator parameters"],a:1,e:"Min-max game; imbalance → instability or mode collapse."},
+{w:10,n:"Q8",t:"single",q:"<p>Mode collapse means…</p>",o:["The discriminator becomes too strong","The generator produces a limited variety of outputs","The discriminator loss diverges","The generator outputs random noise"],a:1,e:"Many z map to the same few outputs."},
+{w:10,n:"Q9",t:"single",q:"<p>Role of the latent space in a VAE?</p>",o:["Stores compressed data","Stores decoder outputs","Represents input–output error","Captures a distribution of latent variables for data generation"],a:3,e:"Encoder outputs μ, σ of q(z|x); sampling gives new data."},
+{w:10,n:"Q10",t:"single",q:"<p>Which statement is FALSE?</p>",o:["GANs generate sharper images than VAEs","A GAN is an implicit density model","FC layers in the StyleGAN mapping network keep their input dimension","The generator and discriminator are always updated simultaneously in the same step"],a:3,e:"They are updated alternately (often k discriminator steps per generator step)."},
+{w:10,n:"Q11",t:"single",miss:1,q:"<p>Match model with capability: (1) discriminative (2) generative (3) conditional generative.</p>",o:["1 → assigns labels, supervised features · 2 → detects outliers, unsupervised features, samples new data · 3 → labels while rejecting outliers, generates data conditioned on labels","1 → assigns labels · 2 → labels while rejecting outliers, conditional generation · 3 → detects outliers, samples new data","1 → detects outliers · 2 → assigns labels · 3 → conditional generation","1 → conditional generation · 2 → assigns labels · 3 → detects outliers"],a:0,e:"Key 1→i, 2→iii, 3→ii. Generative learns p(x); conditional learns p(x|y)."},
+...[["Q12",1,0.36],["Q13",2,0.18],["Q14",3,0.28],["Q15",4,0.43]].map(([n,i,v])=>({w:10,n,t:"num",q:`<p>VAE: μ = [0.3, 0.1, 0.2, 0.4], σ = [0.1, 0.4, 0.2, 0.3], ε = [0.6, 0.2, 0.4, 0.1]. Element <b>${i}</b> of z?</p>`,r:[v,v],e:"z = μ + σ·ε → [0.3+0.06, 0.1+0.08, 0.2+0.08, 0.4+0.03] = [0.36, 0.18, 0.28, 0.43]."})),
+
+/* WEEK 11 */
+{w:11,n:"Q1",t:"single",tag:"code",miss:1,q:"<p>VAE encoder 784→256→(μ, log_var) with latent 2, seed 2024. Value of z?</p>",o:["[[−1.1450, 1.5405]]","[[−1.2653, 1.5955]]","[[−0.0293, 0.3905]]","[[−0.1337, 0.4419]]"],a:0,e:"std = exp(0.5·log_var). Using exp(log_var) gives the wrong z.",code:`self.fc1 = nn.Linear(input_dim, hidden_dim)
+self.fc2_mu = nn.Linear(hidden_dim, latent_dim)
+self.fc2_log_var = nn.Linear(hidden_dim, latent_dim)
+
+h = F.relu(self.fc1(x))
+mu = self.fc2_mu(h)
+log_var = self.fc2_log_var(h)
+
+std = torch.exp(0.5 * log_var)
+eps = torch.randn_like(std)
+return mu + eps * std
+
+mu, log_var = encoder(x)
+z = encoder.reparameterize(mu, log_var)`},
+{w:11,n:"Q2",t:"single",tag:"code",q:"<p>VAE decoder 2→256→784 with sigmoid output. Mean of x_recon?</p>",o:["0.1","−0.1","0.5","−0.5"],a:2,e:"Untrained sigmoid outputs centre around 0.5; a sigmoid can never be negative.",code:`self.fc1 = nn.Linear(latent_dim, hidden_dim)
+self.fc2 = nn.Linear(hidden_dim, output_dim)
+h = F.relu(self.fc1(z))
+x_recon = torch.sigmoid(self.fc2(h))`},
+{w:11,n:"Q3",t:"single",tag:"code",miss:1,q:"<p>Random preds, BCE. D loss = real + fake loss. G loss = BCE(fake_preds, 1). Which is true?</p>",o:["G loss = D loss","G loss < D loss","G loss > D loss"],a:1,e:"Each BCE on uniform-random preds ≈ 1. D adds two terms (≈2), G has one (≈1).",code:`real_loss = adversarial_loss(real_preds, real_labels)
+fake_loss = adversarial_loss(fake_preds, fake_labels)
+total_loss = real_loss + fake_loss
+return adversarial_loss(fake_preds, real_labels)   # generator
+
+real_labels = torch.ones(batch_size, 1)
+fake_labels = torch.zeros(batch_size, 1)
+d_loss = discriminator_loss(real_preds, real_labels, fake_preds, fake_labels)
+g_loss = generator_loss(fake_preds, real_labels)`},
+{w:11,n:"Q4",t:"single",tag:"code",miss:1,q:"<p>Linear β from 1e−4 to 0.02 over 1000 steps. ᾱ at timestep 999?</p>",o:["10⁻¹","10⁻³","10⁻⁵","10⁻⁷"],a:2,e:"ᾱ_T ≈ exp(−Σβ) = exp(−10.05) ≈ 4×10⁻⁵ → closest 10⁻⁵.",viz:"ddpm",code:`def linear_beta_schedule(timesteps, start=0.0001, end=0.02):
+    return np.linspace(start, end, timesteps)   # torch.linspace also fine
+
+def calculate_alpha_schedule(betas):
+    alphas = 1. - betas
+    alphas_cumprod = np.cumprod(alphas)          # torch.cumprod(alphas, dim=0)
+    return alphas, alphas_cumprod`},
+{w:11,n:"Q5",t:"single",tag:"code",miss:1,q:"<p>Forward process with x₀ = ones(1000), one noise sample. x[999][500]?</p>",o:["1.5","−1.5","2.5","−2.5"],a:1,e:"At t = 999, √ᾱ ≈ 0.007, so x ≈ noise[500] ≈ −1.5.",viz:"ddpm",code:`for t in range(timesteps):
+    mean = np.sqrt(alphas_cumprod[t]) * x0
+    var = 1 - alphas_cumprod[t]
+    xt.append(mean + np.sqrt(var) * noise)`},
+{w:11,n:"Q6",t:"single",tag:"code",miss:1,q:"<p>Mean at the last time step of that forward process?</p>",o:["0","0.25","0.5","1"],a:0,e:"x₀'s contribution √ᾱ·1 ≈ 0.007, plus zero-mean noise → mean ≈ 0."},
+
+/* WEEK 12 */
+{w:12,n:"Q1",t:"single",miss:1,q:"<p>Raising the classifier-free guidance scale to large values makes generated images…</p>",o:["More random","More realistic","More stylized","Less diverse"],a:3,e:"Stronger guidance pushes samples toward the condition's mode: higher fidelity to the prompt, lower diversity. (Week 12 key not yet released when this was built — this is the standard answer.)"},
+{w:12,n:"Q2",t:"single",q:"<p>β increases linearly from 0.02 to 0.03 over 150 steps. Total variance Σβ?</p>",o:["3.25","4.5","7.5","3.75"],a:3,e:"Average 0.025 × 150 = 3.75."},
+{w:12,n:"Q3",t:"single",q:"<p>Reverse process starts at variance 1.0 and subtracts 0.02 per step. Steps to reach 0.1?</p>",o:["45","50","40","30"],a:0,e:"(1.0 − 0.1)/0.02 = 45."},
+{w:12,n:"Q4",t:"multi",q:"<p>In classifier-free guidance, if γ = 0… (select all)</p>",o:["It fails to generate realistic samples","It removes all guidance, making generation unconditional","It maximises the classifier's influence","It can give more diverse samples than higher γ, being less constrained by the condition"],a:[1,3],e:"γ = 0 → pure unconditional model; still realistic, just not prompt-specific."},
+{w:12,n:"Q5",t:"multi",miss:1,q:"<p>Which are FALSE for self-supervised learning? (select all)</p>",o:["BYOL does not depend on negative samples","MoCo maintains the dictionary as a stack of samples, enabling keys from immediately preceding mini-batches","In SimCLR the number of negative samples is limited by batch size","In rotation-based SSL the task is generating the correct image for the rotated input","In inpainting the goal is to fill gaps based on surrounding information"],a:[1,3],e:"MoCo uses a QUEUE (FIFO). Rotation SSL CLASSIFIES the rotation angle. (Week 12 key not yet released — standard answer.)"},
+{w:12,n:"Q6",t:"single",q:"<p>What does the reverse process do at each step in DDPMs?</p>",o:["Add noise","Remove noise","Compress to a latent","Classify the image"],a:1,e:"It predicts and removes noise step by step."},
+{w:12,n:"Q7",t:"single",q:"<p>Purpose of the forward process in DDPMs?</p>",o:["Add noise to the image","Remove noise","Generate new images","Learn the denoiser's parameters"],a:0,e:"A fixed Markov chain that gradually adds Gaussian noise."},
+{w:12,n:"Q8",t:"single",q:"<p>The forward diffusion process is…</p>",o:["A stochastic process that gradually adds noise","A deterministic process that removes noise","A neural network that generates images","A GAN-based generator"],a:0,e:"No learnable parameters; q(x_t|x_{t−1}) is Gaussian."},
+{w:12,n:"Q9",t:"single",q:"<p>Primary goal of CLIP?</p>",o:["Generate images from text","Translate text","Learn a joint embedding space for text and images","Image classification only"],a:2,e:"Zero-shot classification is a by-product of that space."},
+{w:12,n:"Q10",t:"single",q:"<p>Technique CLIP uses to learn its joint space (most specific)?</p>",o:["Reinforcement learning","Supervised learning","Contrastive learning","Unsupervised learning"],a:2,e:"InfoNCE over image–text pairs in a batch."},
+{w:12,n:"Q11",t:"single",q:"<p>A common self-supervised learning task?</p>",o:["Image inpainting","Image colourisation","Solving jigsaw puzzles","All of the above"],a:3,e:"All are pretext tasks."},
+{w:12,n:"Q12",t:"single",q:"<p>BLIP primarily excels at…</p>",o:["Image captioning","Image classification","Text-to-image generation","Object detection"],a:0,e:"Bootstrapping Language-Image Pre-training: captioning and VQA."}
+];
+Q.forEach((q,i)=>{q.id=`w${q.w}${q.n}`;if(!q.tag)q.tag=q.t==="num"?"num":"theory";if(q.w===8||q.w===9)q.miss=1});
+
+/* ---------- visuals ---------- */
+function plot(series,x0,x1,y0,y1,{w=520,h=220,xt=[],yt=[],legend=[]}={}){
+  const L=40,R=10,T=10,B=26,sx=x=>L+(x-x0)/(x1-x0)*(w-L-R),sy=y=>T+(y1-y)/(y1-y0)*(h-T-B);
+  let s=`<svg viewBox="0 0 ${w} ${h}" role="img">`;
+  yt.forEach(v=>{s+=`<line class="ax" x1="${L}" x2="${w-R}" y1="${sy(v)}" y2="${sy(v)}"/><text class="tx" x="${L-6}" y="${sy(v)+4}" text-anchor="end">${v}</text>`});
+  xt.forEach(v=>{s+=`<text class="tx" x="${sx(v)}" y="${h-8}" text-anchor="middle">${v}</text>`});
+  series.forEach(([f,cls])=>{let d="";for(let i=0;i<=200;i++){const x=x0+(x1-x0)*i/200;const y=Math.max(y0,Math.min(y1,f(x)));d+=(i?"L":"M")+sx(x).toFixed(1)+" "+sy(y).toFixed(1)}s+=`<path class="${cls}" d="${d}"/>`});
+  return s+"</svg>"+(legend.length?`<div class="cap">${legend.join(" · ")}</div>`:"");
+}
+const POOL=[[156,40,179,240],[99,106,51,5],[149,88,87,71],[62,254,20,14]],PG=[[8,10],[14,2]];
+const ab=(()=>{const b=[],a=[];let c=1;for(let i=0;i<1000;i++){const be=1e-4+(0.02-1e-4)*i/999;b.push(be);c*=1-be;a.push(c)}return a})();
+const VIZ={
+ sigmoid:()=>plot([[x=>sig(x),"l1"],[x=>Math.tanh(x),"l2"],[x=>sig(x)*(1-sig(x))*4,"l3"]],-6,6,-1,1,{xt:[-6,-3,0,3,6],yt:[-1,0,0.5,1],legend:['<span style="color:var(--s1)">σ(x) — centred at 0.5</span>','<span style="color:var(--s2)">tanh(x) — zero-centred</span>','<span style="color:var(--s3)">4·σ′(x) — even, vanishes at the tails</span>']}),
+ ddpm:()=>plot([[t=>ab[Math.min(999,Math.round(t))],"l1"],[t=>Math.sqrt(ab[Math.min(999,Math.round(t))]),"l2"],[t=>Math.sqrt(1-ab[Math.min(999,Math.round(t))]),"l3"]],0,999,0,1,{xt:[0,250,500,750,999],yt:[0,0.5,1],legend:['<span style="color:var(--s1)">ᾱ_t</span>','<span style="color:var(--s2)">√ᾱ_t (signal weight)</span>','<span style="color:var(--s3)">√(1−ᾱ_t) (noise weight)</span>',`ᾱ₉₉₉ = ${ab[999].toExponential(2)}`]}),
+ "pool-max":()=>poolViz("max"),"pool-avg":()=>poolViz("avg"),
+ gbr:()=>`<div class="swatch"><span>RGB fur</span><i style="background:rgb(214,160,64)"></i><span>→ GBR</span><i style="background:rgb(160,64,214)"></i><span>(R,G,B) = (214,160,64) → (160,64,214)</span></div>`,
+ iou:()=>`<svg viewBox="0 0 220 150"><rect x="20" y="20" width="96" height="96" fill="color-mix(in srgb,var(--s1) 25%,transparent)" stroke="var(--s1)" stroke-width="2"/><rect x="52" y="52" width="96" height="96" fill="color-mix(in srgb,var(--s2) 25%,transparent)" stroke="var(--s2)" stroke-width="2"/><rect x="52" y="52" width="64" height="64" fill="none" stroke="var(--ink)" stroke-dasharray="4 3"/><text class="tx" x="84" y="88" text-anchor="middle">8×8</text><text class="tx" x="168" y="40">12×12 each</text></svg><div class="cap">IoU = 64 / (144 + 144 − 64)</div>`,
+ canny:()=>flow(["Gaussian smooth","∇ magnitude + direction","non-max suppression","double threshold","hysteresis linking"]),
+ cnn:()=>flow(["28×28×1","conv5 p2 → 28×28×32","pool → 14×14×32","conv7 p3 → 14×14×16","pool → 7×7×16","flatten 784","fc → 10"]),
+ vit:()=>flow(["28×28×1","Conv2d k=7 s=7 → 64×4×4","flatten → 16×64","+ CLS → 17×64","+ pos embed","2× encoder","CLS → fc → 10"]),
+ mha:()=>flow(["q,k,v (4,2,64)","Linear → (4,2,32)","view (4,2,8,4) → permute (4,8,2,4)","QKᵀ/√4 → (4,8,2,2)","softmax(dim=−1)"]),
+ rnn:()=>flow(["x ∈ ℝ¹³²","U1: 132×256","D1 (V1: 256×256)","U2: 256×128","D2 (V2: 128×128)","W: 128×15","15 classes"]),
+ lstm:()=>`<div class="mat">f = σ(W_f·[h₋₁, x] + b_f)    i = σ(W_i·[h₋₁, x] + b_i)    o = σ(W_o·[h₋₁, x] + b_o)
+C̃ = tanh(W_C·[h₋₁, x] + b_C)   C = f·C₋₁ + i·C̃            h = o·tanh(C)
+GRU: z = σ(W_z·[h₋₁,x])  r = σ(W_r·[h₋₁,x])  h̃ = tanh(W·[r·h₋₁, x])  h = (1−z)·h₋₁ + z·h̃</div>`
+};
+function flow(a){return `<div class="flow">${a.map(s=>`<span>${s}</span>`).join("<b>→</b>")}</div>`}
+function poolViz(mode){
+  const cell=(r,c)=>{const w=(r<2?0:2)+(c<2?0:1);const win=[0,1].flatMap(i=>[0,1].map(j=>POOL[(r<2?0:2)+i][(c<2?0:2)+j]));const mx=POOL[r][c]===Math.max(...win);return `<div class="w${w}${mode==="max"&&mx?" mx":""}">${POOL[r][c]}</div>`};
+  let g='<div class="grid4">';for(let r=0;r<4;r++)for(let c=0;c<4;c++)g+=cell(r,c);g+='</div>';
+  let gg='<div class="grid4" style="grid-template-columns:repeat(2,52px)">'+PG.flat().map((v,i)=>`<div class="w${i}">${v}</div>`).join("")+'</div>';
+  return `<div class="vizrow"><div>${g}<div class="cap">feature map — colours = 2×2 windows${mode==="max"?", outlined = window max":""}</div></div><div>${gg}<div class="cap">upstream gradient</div></div></div>`;
+}
+
+/* ---------- question card ---------- */
+function card(q,{exam=false,shuffleOpts=false,onDone}={}){
+  const c=el("article","qcard");
+  const prev=store.res[q.id];
+  const tags=[`<span class="num">W${q.w} · ${q.n}</span>`];
+  if(q.tag==="code")tags.push('<span class="tag code">notebook</span>');
+  else if(q.tag==="num")tags.push('<span class="tag">numerical</span>');
+  if(q.t==="multi")tags.push('<span class="tag">select all</span>');
+  if(q.miss&&!exam)tags.push(`<span class="tag miss">${q.w===8||q.w===9?"not attempted":"missed in assignment"}</span>`);
+  if(prev!=null&&!exam)tags.push(`<span class="tag ${prev?"res-ok":"res-no"}">${prev?"you got it":"wrong last time"}</span>`);
+  c.append(el("div","qmeta",tags.join("")));
+  c.append(el("div","qtext",q.q));
+  if(q.viz&&!exam)c.append(el("div","viz",VIZ[q.viz]()));
+  let get;const optEls=[];
+  if(q.t==="num"){
+    const row=el("div","numrow");const inp=el("input");inp.type="text";inp.inputMode="decimal";inp.id="in-"+q.id+(exam?"-x":"");inp.placeholder="your answer";inp.setAttribute("aria-label","Answer");
+    row.append(inp);c.append(row);
+    get=()=>inp.value.trim()===""?null:parseFloat(inp.value.replace(/,/g,""));
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!exam)check()});
+  }else{
+    const box=el("div","opts");let order=q.o.map((_,i)=>i);if(shuffleOpts)order=shuffle(order);
+    const name="g-"+q.id+(exam?"-x":"")+Math.random().toString(36).slice(2,6);
+    order.forEach(i=>{const lab=el("label","opt");const inp=el("input");inp.type=q.t==="multi"?"checkbox":"radio";inp.name=name;inp.value=i;lab.append(inp,el("span",null,q.o[i]));box.append(lab);optEls[i]=lab});
+    c.append(box);
+    get=()=>{const v=[...box.querySelectorAll("input:checked")].map(x=>+x.value);return v.length?v:null};
+  }
+  const act=el("div","actions");const fb=el("div");
+  const isRight=v=>{if(v==null)return false;if(q.t==="num"){const[lo,hi]=q.r;const tol=Math.max(1e-9,Math.abs(hi)*1e-6);return v>=lo-tol&&v<=hi+tol}if(q.t==="single")return v.length===1&&v[0]===q.a;const s=[...v].sort().join();return s===[...q.a].sort().join()};
+  let done=false;
+  function reveal(record=true){
+    if(done)return;done=true;const v=get();const ok=isRight(v);
+    c.classList.add(ok?"ok":"no");
+    if(q.t!=="num"){const ans=q.t==="multi"?q.a:[q.a];optEls.forEach((o,i)=>{if(!o)return;o.querySelector("input").disabled=true;if(ans.includes(i))o.classList.add("right");else if(v&&v.includes(i))o.classList.add("wrong")})}
+    const correct=q.t==="num"?(q.r[0]===q.r[1]?q.r[0].toLocaleString("en-IN"):`${q.r[0]} to ${q.r[1]}`):(q.t==="multi"?q.a.map(i=>q.o[i]).join(" · "):q.o[q.a]);
+    fb.className="fb "+(ok?"ok":"no");
+    fb.innerHTML=`<strong>${ok?"Correct":v==null?"Not answered":"Not quite"}</strong>${ok?"":`<div>Answer: <b>${correct}</b></div>`}<div>${q.e}</div>`;
+    if(q.code){const cw=el("div","codewrap");cw.innerHTML=`<span class="lbl">Solution code (YOUR CODE parts)</span><pre class="code">${esc(q.code)}</pre>`;fb.append(cw)}
+    if(record&&!q.drill){store.res[q.id]=ok;save();refreshStats()}
+    if(chk)chk.disabled=true;
+    onDone&&onDone(ok,v);
+    return ok;
+  }
+  function check(){reveal(true)}
+  let chk=null;
+  if(!exam){chk=el("button","btn primary","Check");chk.onclick=check;act.append(chk);
+    if(q.code){const sb=el("button","btn","Show code");sb.onclick=()=>{const p=c.querySelector(".peek");if(p){p.remove();sb.textContent="Show code";return}const cw=el("div","codewrap peek");cw.innerHTML=`<span class="lbl">Solution code</span><pre class="code">${esc(q.code)}</pre>`;act.after(cw);sb.textContent="Hide code"};act.append(sb)}
+    c.append(act);}
+  c.append(fb);
+  c.api={reveal,get,isRight};
+  return c;
+}
+
+/* ---------- stats ---------- */
+function refreshStats(){
+  const ids=Object.keys(store.res).filter(k=>Q.some(q=>q.id===k));
+  const ok=ids.filter(k=>store.res[k]).length;
+  $("#stats").innerHTML=`<span><b>${Q.length}</b> questions</span><span><b>${ids.length}</b> attempted</span><span><b>${ok}</b> correct</span><span>accuracy <b>${ids.length?Math.round(ok/ids.length*100):0}%</b></span><span>drills <b>${store.drill.ok}/${store.drill.n}</b></span>`;
+  $("#pbar").style.width=(ok/Q.length*100)+"%";
+  document.querySelectorAll(".wk").forEach(b=>{const w=+b.dataset.w;const qs=Q.filter(q=>q.w===w);const k=qs.filter(q=>store.res[q.id]).length;const m=b.querySelector(".m i");if(m)m.style.width=(k/qs.length*100)+"%";const s=b.querySelector("small");if(s)s.textContent=`${k}/${qs.length}`});
+}
+
+/* ---------- views ---------- */
+const app=$("#app");let curWeek=1,weekFilter="all",timerId=null;
+try{const w=+localStorage.getItem("dl4cv-week");if(w>=1&&w<=12)curWeek=w}catch(e){}
+function viewWeeks(){
+  app.innerHTML="";
+  const wk=el("div","weeks");
+  for(let w=1;w<=12;w++){const b=el("button","wk",`W${w}<small></small><span class="m"><i></i></span>`);b.dataset.w=w;b.setAttribute("aria-pressed",w===curWeek);b.onclick=()=>{curWeek=w;try{localStorage.setItem("dl4cv-week",w)}catch(e){}viewWeeks()};wk.append(b)}
+  app.append(wk);
+  const v=el("section","view");const W=WEEKS[curWeek];const qs=Q.filter(q=>q.w===curWeek);
+  const head=el("div","weekhead",`<div class="eyebrow">Week ${curWeek} · ${qs.length} questions</div><h2>${W.t}</h2>`);
+  const f=el("div","filters");
+  [["all","All"],["code","Notebook"],["num","Numerical"],["theory","Theory"],["miss","Missed / not attempted"],["wrong","Wrong here"]].forEach(([k,l])=>{const b=el("button","chipbtn",l);b.setAttribute("aria-pressed",weekFilter===k);b.onclick=()=>{weekFilter=k;viewWeeks()};f.append(b)});
+  head.append(f);v.append(head);
+  v.append(el("div","sheet",`<h3>Must-know for this week</h3><ul>${W.n.map(x=>`<li>${x}</li>`).join("")}</ul>`));
+  if(curWeek===11)v.append(el("div","viz",VIZ.ddpm()));
+  const list=qs.filter(q=>weekFilter==="all"||(weekFilter==="miss"?q.miss:weekFilter==="wrong"?store.res[q.id]===false:q.tag===weekFilter));
+  if(!list.length)v.append(el("div","empty","Nothing in this filter yet. Pick another filter above."));
+  list.forEach(q=>v.append(card(q)));
+  const rb=el("div","actions");const nx=el("button","btn",curWeek<12?`Next: Week ${curWeek+1} →`:"Back to Week 1");nx.onclick=()=>{curWeek=curWeek<12?curWeek+1:1;weekFilter="all";viewWeeks();window.scrollTo({top:0})};rb.append(nx);v.append(rb);
+  app.append(v);refreshStats();
+}
+function viewMock(){
+  clearInterval(timerId);app.innerHTML="";
+  const v=el("section","view");
+  v.append(el("div","weekhead",`<div class="eyebrow">Exam simulation</div><h2>Mixed mock exam</h2><p class="note">Random questions from all 12 weeks, options shuffled, no answers until you submit. Like the real exam: read every option, then commit.</p>`));
+  const tb=el("div","toolbar");
+  tb.innerHTML=`<label for="mk-n">Questions <select id="mk-n"><option>15</option><option selected>25</option><option>40</option><option value="all">All ${Q.length}</option></select></label>
+  <label for="mk-src">From <select id="mk-src"><option value="all">All weeks</option><option value="miss">Weak spots only</option><option value="theory">Theory only</option><option value="calc">Numerical + notebook</option></select></label>
+  <label for="mk-t">Timer <select id="mk-t"><option value="0">Off</option><option value="1.2" selected>1.2 min / question</option><option value="0.8">0.8 min / question (hard)</option></select></label>`;
+  const go=el("button","btn primary","Start mock");tb.append(go);v.append(tb);
+  const area=el("div","view");v.append(area);app.append(v);
+  go.onclick=()=>{
+    const nSel=$("#mk-n").value,src=$("#mk-src").value,tm=+$("#mk-t").value;
+    let pool=Q.filter(q=>src==="all"||(src==="miss"?(q.miss||store.res[q.id]===false):src==="theory"?q.tag==="theory":q.tag!=="theory"));
+    pool=shuffle(pool);const n=nSel==="all"?pool.length:Math.min(+nSel,pool.length);pool=pool.slice(0,n);
+    area.innerHTML="";const bar=el("div","toolbar");const tEl=el("span","timer");const sub=el("button","btn primary","Submit exam");
+    bar.append(el("span","note",`${n} questions · ${n} marks`),tEl,sub);area.append(bar);
+    const cards=pool.map(q=>{const c=card(q,{exam:true,shuffleOpts:true});area.append(c);return c});
+    const sub2=el("button","btn primary","Submit exam");area.append(sub2);
+    let left=Math.round(tm*n*60);
+    const fmt=s=>`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+    if(tm){tEl.textContent=fmt(left);timerId=setInterval(()=>{left--;tEl.textContent=fmt(Math.max(0,left));if(left<=0)finish()},1000)}
+    let fin=false;
+    function finish(){if(fin)return;fin=true;clearInterval(timerId);let ok=0;cards.forEach(c=>{if(c.api.reveal(true))ok++});sub.disabled=sub2.disabled=true;
+      const pct=Math.round(ok/n*100);const sc=el("div","score",`<div class="eyebrow">Result</div><div class="big">${ok} / ${n}</div><div>${pct}% · scaled to the real exam: <b>${Math.round(ok/n*75)} / 75</b></div><div class="note">${pct>=90?"Exam-ready. Run another mock on a different mix.":pct>=70?"Close. Open “My weak spots” and redo every red card.":"Go back through the week tabs for the red cards, then retake."}</div>`);
+      area.prepend(sc);window.scrollTo({top:area.offsetTop-70,behavior:"smooth"});}
+    sub.onclick=sub2.onclick=finish;
+    window.scrollTo({top:area.offsetTop-70,behavior:"smooth"});
+  };
+}
+
+/* ---------- numerical drill generators ---------- */
+const GEN={
+ "Conv output size":()=>{let W,F,P,S;do{W=pick([28,32,64,96,128,224]);F=pick([3,5,7,11]);P=pick([0,1,2,3]);S=pick([1,2,4])}while((W-F+2*P)%S!==0||W-F+2*P<0);const o=(W-F+2*P)/S+1;return{q:`<p>Input ${W}×${W}, filter ${F}×${F}, padding ${P}, stride ${S}. Output width?</p>`,r:[o,o],e:`(${W} − ${F} + 2·${P})/${S} + 1 = ${o}`}},
+ "Conv + BN parameters":()=>{const i=pick([1,3,16,32,64]),o=pick([8,16,32,64]),k=pick([1,3,5,7]),bn=Math.random()<.5;const p=o*i*k*k+o+(bn?2*o:0);return{q:`<p>Conv2d(${i} → ${o}, kernel ${k})${bn?` followed by BatchNorm2d(${o})`:""}. Trainable parameters?</p>`,r:[p,p],e:`${o}·${i}·${k}·${k} + ${o} bias${bn?` + 2·${o} (γ, β)`:""} = ${p}`}},
+ "Pooling backprop":()=>{const vals=shuffle([...Array(256).keys()]).slice(0,16);const m=[0,1,2,3].map(r=>vals.slice(r*4,r*4+4));const g=[[rnd(1,20),rnd(1,20)],[rnd(1,20),rnd(1,20)]];const mode=pick(["max","average"]);const r=rnd(0,3),c=rnd(0,3);const wr=r>>1,wc=c>>1;const win=[0,1].flatMap(i=>[0,1].map(j=>m[wr*2+i][wc*2+j]));let a=mode==="max"?(m[r][c]===Math.max(...win)?g[wr][wc]:0):g[wr][wc]/4;return{q:`<p>2×2 ${mode} pooling, stride 2.</p><pre>${m.map(x=>x.map(v=>String(v).padStart(4)).join("")).join("\n")}</pre><p>Upstream gradient [[${g[0]}],[${g[1]}]]. Gradient at (${r+1},${c+1})?</p>`,r:[a,a],e:mode==="max"?`Window max is ${Math.max(...win)}; ${m[r][c]===Math.max(...win)?"this cell is the max → gets "+g[wr][wc]:"this cell is not the max → 0"}.`:`${g[wr][wc]}/4 = ${a}`}},
+ "IoU":()=>{const s1=rnd(6,14),s2=rnd(6,14),w=rnd(1,Math.min(s1,s2)),h=rnd(1,Math.min(s1,s2));const I=w*h,U=s1*s1+s2*s2-I,v=I/U*100;return{q:`<p>Box A is ${s1}×${s1}, box B is ${s2}×${s2}; they overlap in a ${w}×${h} region. IoU in %? (1 decimal)</p>`,r:[v-0.15,v+0.15],e:`${I} / (${s1*s1} + ${s2*s2} − ${I}) = ${v.toFixed(1)}%`}},
+ "Contrast stretch":()=>{const m=[...Array(9)].map(()=>rnd(0,255));const mn=Math.min(...m),mx=Math.max(...m);const i=rnd(0,8);const v=(m[i]-mn)/(mx-mn)*255;return{q:`<p>3×3 image</p><pre>${[0,1,2].map(r=>m.slice(r*3,r*3+3).map(x=>String(x).padStart(5)).join("")).join("\n")}</pre><p>Linear stretch to [0,255]. New value of the pixel ${m[i]} (row ${Math.floor(i/3)+1}, col ${i%3+1})? (1 decimal)</p>`,r:[v-0.6,v+0.6],e:`(${m[i]} − ${mn})/(${mx} − ${mn}) × 255 = ${v.toFixed(1)}`}},
+ "Depthwise separable cost":()=>{const D=pick([14,28,56,64,112,128]),M=pick([8,16,32,64]),N=pick([16,32,64,128]),k=pick([3,5]);const opts=[["standard conv parameters",k*k*M*N],["standard conv cost (MACs)",k*k*M*N*D*D],["depthwise parameters",k*k*M],["depthwise cost (MACs)",k*k*M*D*D],["pointwise parameters",M*N],["pointwise cost (MACs)",M*N*D*D]];const [n,v]=pick(opts);return{q:`<p>Df = ${D}, M = ${M}, N = ${N}, k = ${k}, padded, no bias. Compute the <b>${n}</b>.</p>`,r:[v,v],e:`Standard k²MN(·Df²) · depthwise k²M(·Df²) · pointwise MN(·Df²) → ${v.toLocaleString("en-IN")}`}},
+ "LSTM / GRU gate":()=>{const w1=rnd(-15,15)/10,w2=rnd(-15,15)/10,h=rnd(-20,20)/10,x=rnd(-30,30)/10,b=rnd(-10,10)/10;const z=w1*h+w2*x+b,v=sig(z);return{q:`<p>Gate with W = [${w1}, ${w2}] on [h₋₁, x], b = ${b}, h₋₁ = ${h}, x = ${x}. Gate value σ(·)? (3 decimals)</p>`,r:[v-0.005,v+0.005],e:`σ(${w1}·${h} + ${w2}·${x} + ${b}) = σ(${z.toFixed(3)}) = ${v.toFixed(3)}`}},
+ "LSTM cell & hidden":()=>{const f=rnd(10,95)/100,i=rnd(5,95)/100,o=rnd(5,95)/100,cp=rnd(-15,15)/10,ct=rnd(-99,99)/100;const C=f*cp+i*ct,H=o*Math.tanh(C);const askH=Math.random()<.5;const v=askH?H:C;return{q:`<p>f = ${f}, i = ${i}, o = ${o}, C₋₁ = ${cp}, C̃ = ${ct}. Compute ${askH?"h_t":"C_t"} (3 decimals).</p>`,r:[v-0.005,v+0.005],e:`C = f·C₋₁ + i·C̃ = ${C.toFixed(3)}${askH?`; h = o·tanh(C) = ${H.toFixed(3)}`:""}`}},
+ "GRU hidden":()=>{const z=rnd(5,95)/100,hp=rnd(-15,15)/10,ht=rnd(-99,99)/100;const v=(1-z)*hp+z*ht;return{q:`<p>GRU: z = ${z}, h₋₁ = ${hp}, h̃ = ${ht}. h_t? (3 decimals)</p>`,r:[v-0.005,v+0.005],e:`(1 − ${z})·${hp} + ${z}·${ht} = ${v.toFixed(3)}`}},
+ "RNN / LSTM parameter count":()=>{const t=pick(["rnnU","rnnV","lstm"]);const i=pick([1,10,32,64,100,132]),h=pick([5,16,32,64,128,256]);if(t==="lstm"){const v=4*(h*i+h*h+2*h);return{q:`<p>PyTorch nn.LSTM(input ${i}, hidden ${h}, 1 layer). Parameters?</p>`,r:[v,v],e:`4·(h·in + h·h + 2h) = 4·(${h*i} + ${h*h} + ${2*h}) = ${v}`}}const v=t==="rnnU"?i*h:h*h;return{q:`<p>Vanilla RNN, input ${i}, hidden ${h}, no bias. Weights in ${t==="rnnU"?"the input→hidden matrix U":"the hidden→hidden matrix V"}?</p>`,r:[v,v],e:t==="rnnU"?`${i}×${h} = ${v}`:`${h}×${h} = ${v}`}},
+ "Integral image":()=>{const m=[...Array(3)].map(()=>[...Array(3)].map(()=>rnd(0,9)));const r1=rnd(0,2),c1=rnd(0,2),r2=rnd(r1,2),c2=rnd(c1,2);let s=0;for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)s+=m[r][c];return{q:`<pre>${m.map(x=>x.join("  ")).join("\n")}</pre><p>Sum of the region rows ${r1+1}–${r2+1}, cols ${c1+1}–${c2+1} (inclusive)? Use the integral-image formula.</p>`,r:[s,s],e:`d + a − b − c on the integral image = ${s}`}},
+ "VAE reparameterisation":()=>{const mu=rnd(-10,10)/10,sd=rnd(1,9)/10,ep=rnd(-20,20)/10,lv=Math.random()<.5;const v=mu+sd*ep;return{q:lv?`<p>μ = ${mu}, log σ² = ${(2*Math.log(sd)).toFixed(4)}, ε = ${ep}. z? (3 decimals)</p>`:`<p>μ = ${mu}, σ = ${sd}, ε = ${ep}. z = ? (3 decimals)</p>`,r:[v-0.005,v+0.005],e:lv?`σ = exp(0.5·log σ²) = ${sd}; z = ${mu} + ${sd}·${ep} = ${v.toFixed(3)}`:`z = μ + σ·ε = ${v.toFixed(3)}`}},
+ "Diffusion schedule":()=>{if(Math.random()<.5){const a=rnd(1,5)/100,b=a+rnd(1,4)/100,T=pick([100,150,200,250,500]);const v=T*(a+b)/2;return{q:`<p>β rises linearly from ${a} to ${b.toFixed(2)} over ${T} steps. Σβ?</p>`,r:[v-0.01,v+0.01],e:`${T} × (${a} + ${b.toFixed(2)})/2 = ${v.toFixed(2)}`}}const s=pick([1,0.9,0.8]),e=pick([0.1,0.2,0.05]),d=pick([0.01,0.02,0.05]);const v=Math.round((s-e)/d*1000)/1000;return{q:`<p>Variance starts at ${s}, drops by ${d} per step. Steps to reach ${e}?</p>`,r:[v,v],e:`(${s} − ${e})/${d} = ${v}`}},
+ "Activations":()=>{const x=rnd(-30,30)/10,a=pick([0.1,0.3,0.5,1]);const k=pick(["elu","sig","tanh","eluT"]);let v,s;if(k==="elu"){v=x>0?x:a*(Math.exp(x)-1);s=`ELU(${x}), α = ${a}`}else if(k==="sig"){v=sig(x);s=`sigmoid(${x})`}else if(k==="tanh"){v=Math.tanh(x);s=`tanh(${x})`}else{const t=Math.tanh(x);v=t>0?t:a*(Math.exp(t)-1);s=`ELU(tanh(${x})), α = ${a}`}return{q:`<p>Compute ${s}. (3 decimals)</p>`,r:[v-0.005,v+0.005],e:`= ${v.toFixed(3)}`}},
+ "Mixup":()=>{const l=pick([0.2,0.3,0.4,0.6,0.7]),a=rnd(0,20),b=rnd(0,20);const v=l*a+(1-l)*b;return{q:`<p>Mixup with λ = ${l} on x₁. Pixel values x₁ = ${a}, x₂ = ${b}. Mixed value?</p>`,r:[v-0.01,v+0.01],e:`${l}·${a} + ${(1-l).toFixed(1)}·${b} = ${v.toFixed(2)}`}},
+ "RMSProp step":()=>{const th=rnd(5,20)/10,g=rnd(1,15)/10,rp=rnd(1,10)/10,lr=pick([0.01,0.1,0.5,0.9]),rho=pick([0.3,0.5,0.9]);const r=rho*rp+(1-rho)*g*g,v=th-lr*g/Math.sqrt(1e-7+r);return{q:`<p>RMSProp: θ = ${th}, g = ${g}, r₋₁ = ${rp}, η = ${lr}, ρ = ${rho}, δ = 1e−7. New θ? (3 decimals)</p>`,r:[v-0.005,v+0.005],e:`r = ${rho}·${rp} + ${(1-rho).toFixed(1)}·${g}² = ${r.toFixed(4)}; θ = ${th} − ${lr}·${g}/√r = ${v.toFixed(3)}`}}
+};
+let drillTopic="Mixed";
+function viewDrill(){
+  app.innerHTML="";const v=el("section","view");
+  v.append(el("div","weekhead",`<div class="eyebrow">Unlimited practice</div><h2>Numerical drills</h2><p class="note">Fresh random numbers every time, same formulas as the assignments. Use a calculator like in the exam. Press Enter to check, then “Next”.</p>`));
+  const f=el("div","filters");["Mixed",...Object.keys(GEN)].forEach(k=>{const b=el("button","chipbtn",k);b.setAttribute("aria-pressed",drillTopic===k);b.onclick=()=>{drillTopic=k;viewDrill()};f.append(b)});v.append(f);
+  const st=el("div","drillstat");v.append(st);
+  const holder=el("div","view");v.append(holder);app.append(v);
+  let sess={n:0,ok:0};
+  function next(){
+    const key=drillTopic==="Mixed"?pick(Object.keys(GEN)):drillTopic;const g=GEN[key]();
+    const q={id:"drill",drill:1,w:"∞",n:key,t:"num",tag:"num",q:g.q,r:g.r,e:g.e};
+    holder.innerHTML="";
+    const c=card(q,{onDone:ok=>{sess.n++;store.drill.n++;if(ok){sess.ok++;store.drill.ok++}save();refreshStats();upd();nb.focus()}});
+    holder.append(c);const nb=el("button","btn primary","Next problem →");nb.onclick=next;holder.append(nb);
+    const inp=c.querySelector("input");inp&&inp.focus({preventScroll:true});
+  }
+  const upd=()=>{st.textContent=`This session: ${sess.ok}/${sess.n} correct · all-time drills: ${store.drill.ok}/${store.drill.n}`};
+  upd();next();
+}
+function viewMistakes(){
+  app.innerHTML="";const v=el("section","view");
+  const list=Q.filter(q=>store.res[q.id]===false||(q.miss&&store.res[q.id]!==true));
+  v.append(el("div","weekhead",`<div class="eyebrow">${list.length} to clear</div><h2>My weak spots</h2><p class="note">Everything you missed or skipped in the real assignments, plus anything you got wrong here. A card leaves this list once you answer it correctly.</p>`));
+  const tb=el("div","actions");const rs=el("button","btn","Reset all progress");let armed=false;
+  rs.onclick=()=>{if(!armed){armed=true;rs.textContent="Tap again to erase progress";setTimeout(()=>{armed=false;rs.textContent="Reset all progress"},3000);return}store={res:{},drill:{n:0,ok:0}};save();viewMistakes()};
+  tb.append(rs);v.append(tb);
+  if(!list.length)v.append(el("div","empty","All clear. Run a full mixed mock to confirm."));
+  list.forEach(q=>v.append(card(q)));app.append(v);refreshStats();
+}
+const VIEWS={weeks:viewWeeks,mock:viewMock,drill:viewDrill,mistakes:viewMistakes};
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{clearInterval(timerId);document.querySelectorAll(".mode").forEach(x=>x.setAttribute("aria-pressed",x===b));VIEWS[b.dataset.mode]();window.scrollTo({top:0})});
+const h=location.hash.slice(1);
+if(VIEWS[h]){document.querySelectorAll(".mode").forEach(x=>x.setAttribute("aria-pressed",x.dataset.mode===h));VIEWS[h]()}else viewWeeks();
+</script>
+
+</body></html>
